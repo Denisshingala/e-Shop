@@ -11,8 +11,7 @@
 
     <link rel="stylesheet" href="css/style.css">
     <style>
-        th,
-        td {
+        th, td {
             vertical-align: middle !important;
         }
     </style>
@@ -33,13 +32,9 @@
                         <th style="width:200px;">Description</th>
                         <th>Brand</th>
                         <th>Category</th>
-                        <th>Price</th>
-                        <th>Discount</th>
+                        <th>Selling Price (Discounted price)</th>
                         <th>Images</th>
-                        <th>Sizes</th>
-                        <th>Colours</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <th>Items sold</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,18 +44,10 @@
                         <td>@mdo</td>
                         <td>@mdo</td>
                         <td>@mdo</td>
-                        <td>@mdo</td>
                         <td>
                             <img src="../images/logo.png" alt="" width="75" height="75">
                         </td>
                         <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>
-                            <a href="#" style="color:green; font-weight:bold; text-decoration:underline; cursor:pointer;">Edit</a>
-                        </td>
-                        <td>
-                            <a href="#" style="color:red; font-weight:bold; text-decoration:underline; cursor:pointer;">Delete</a>
-                        </td>
                     </tr>
                 </tbody>
             </table>

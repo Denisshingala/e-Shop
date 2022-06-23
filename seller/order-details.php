@@ -11,11 +11,13 @@
 
     <link rel="stylesheet" href="css/style.css">
     <style>
-        th,
-        td {
+        th, td {
             vertical-align: middle !important;
         }
     </style>
+
+
+
 </head>
 
 <body>
@@ -29,38 +31,28 @@
             <table class="table table-bordered table-responsive table-striped text-center my-auto" id="myTable">
                 <thead>
                     <tr style="background-color: rgb(95, 162, 240);">
+                        <th>Invoice</th>
                         <th>Product Title</th>
-                        <th style="width:200px;">Description</th>
                         <th>Brand</th>
                         <th>Category</th>
-                        <th>Price</th>
-                        <th>Discount</th>
                         <th>Images</th>
-                        <th>Sizes</th>
-                        <th>Colours</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <th>Quantity</th>
+                        <th>Size</th>
+                        <th>Colour</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>Mark</td>
+                        <td>Mark</td>
                         <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
                         <td>@mdo</td>
                         <td>
                             <img src="../images/logo.png" alt="" width="75" height="75">
                         </td>
                         <td>@mdo</td>
                         <td>@mdo</td>
-                        <td>
-                            <a href="#" style="color:green; font-weight:bold; text-decoration:underline; cursor:pointer;">Edit</a>
-                        </td>
-                        <td>
-                            <a href="#" style="color:red; font-weight:bold; text-decoration:underline; cursor:pointer;">Delete</a>
-                        </td>
+                        <td>@mdo</td>
                     </tr>
                 </tbody>
             </table>
