@@ -1,17 +1,19 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap");
 
 * {
     box-sizing: border-box;
-    font-size: small;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1vw;
 }
 
 body {
+    padding: 10px;
     background: #f6f5f7;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    font-family: "Montserrat", sans-serif;
     height: 100vh;
 }
 
@@ -46,8 +48,8 @@ a {
 
 button {
     border-radius: 20px;
-    border: 1px solid #ff4b2b;
-    background-color: #ff4b2b;
+    border: 1px solid #2b52ff;
+    background-color: #2b64ff;
     color: #ffffff;
     font-size: 12px;
     font-weight: bold;
@@ -76,7 +78,7 @@ form {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 0 50px;
+    padding: 20px 50px;
     height: 100%;
     text-align: center;
 }
@@ -102,6 +104,7 @@ option {
 .content {
     height: 450px;
     overflow: auto;
+    margin: 10px 0;
 }
 
 .content::-webkit-scrollbar {
@@ -116,7 +119,7 @@ option {
     overflow: hidden;
     width: 768px;
     max-width: 100%;
-    min-height: 600px;
+    min-height: 500px;
 }
 
 .form-container {
@@ -181,9 +184,9 @@ option {
 }
 
 .overlay {
-    background: #ff416c;
-    background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
-    background: linear-gradient(to right, #ff4b2b, #ff416c);
+    background: #9a41ff;
+    background: -webkit-linear-gradient(to right, #442bff, #8a41ff);
+    background: linear-gradient(to right, #2b52ff, #b041ff);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 0 0;
@@ -245,29 +248,4 @@ option {
     margin: 0 5px;
     height: 40px;
     width: 40px;
-}
-
-footer {
-    background-color: #222;
-    color: #fff;
-    font-size: 14px;
-    bottom: 0;
-    position: fixed;
-    left: 0;
-    right: 0;
-    text-align: center;
-    z-index: 999;
-}
-
-footer p {
-    margin: 10px 0;
-}
-
-footer i {
-    color: red;
-}
-
-footer a {
-    color: #3c97bf;
-    text-decoration: none;
 }
