@@ -4,8 +4,8 @@
             <img src="../images/logo.png" alt="e-shop" width="140" height="120">
         </a>
     </div>
-    <div>
+    <form action="../action/logout.php">
         <button class="btn btn-danger" style="margin: 0 50px;">Logout</button>
-    </div>
+    </form>
 </nav>
 <hr style="margin:0;">
