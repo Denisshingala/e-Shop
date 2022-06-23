@@ -11,8 +11,8 @@
             </a>
         </li>
         <li>
-            <a href="#" class="nav-link text-white">
-                Verify Products
+            <a href="view-products.php" class="nav-link text-white">
+                View Products
             </a>
         </li>
     </ul>

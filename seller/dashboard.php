@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <title>e-Shop | Admin</title>
+    <title>e-Shop | Seller</title>
 
     <?php include('utilities/header.php') ?>
 
