@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <title>e-Shop | Admin</title>
+    <title>e-Shop | Seller</title>
 
     <?php include('utilities/header.php') ?>
 
@@ -35,7 +35,7 @@
 
                 <div class="mb-4">
                     <label for="images" class="form-label">Product Images</label>
-                    <input class="form-control" name="product-images" id="product-images" enctype="multipart/form-data" mutiple type="file">
+                    <input class="form-control" name="product-images" id="product-images" enctype="multipart/form-data" multiple type="file">
                 </div>
 
                 <div class="form-row mb-4">
@@ -51,22 +51,22 @@
                         </select>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="price">Price</label>
-                        <input type="text" class="form-control" name="price" id="price">
+                        <label for="price">Price (Rs.)</label>
+                        <input type="number" class="form-control" name="price" id="price">
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="price">Discount</label>
-                        <input type="text" class="form-control" name="discount" id="discount">
+                        <label for="price">Discount (%)</label>
+                        <input type="number" class="form-control" name="discount" id="discount" maxlength="100">
                     </div>
                 </div>
 
-                <div class="form-row mb-4">
+                <div class="form-row mb-2">
                     <div class="form-group col-md-6 mb-4">
-                        <label for="size">Sizes available (if applicable)</label>
+                        <label for="size">Sizes available (comma separated, if applicable)</label>
                         <input type="text" class="form-control" name="size" id="size">
                     </div>
                     <div class="form-group col-md-6 mb-4">
-                        <label for="size">Colours available (if applicable)</label>
+                        <label for="size">Colours available (comma separated, if applicable)</label>
                         <input type="text" class="form-control" name="colour" id="colour">
                     </div>
                 </div>
