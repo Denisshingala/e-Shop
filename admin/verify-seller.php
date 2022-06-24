@@ -1,7 +1,6 @@
 <?php
 require('../configuration/config.php');
 require('../action/auth.php');
-require('/action/seller-approve.php');
 ?>
 <!doctype html>
 <html lang="en">
@@ -34,12 +33,8 @@ require('/action/seller-approve.php');
                         <th>GST No.</th>
                         <th>Bank Account No.</th>
                         <th>IFSC code</th>
-<<<<<<< HEAD
-                        <th>Action</th>
-=======
                         <th>Approve</th>
                         <th>Reject</th>
->>>>>>> ed6bddd4199f8868dd20b31525c2402b7438d77c
                     </tr>
                 </thead>
                 <tbody id="tbody">
@@ -57,7 +52,7 @@ require('/action/seller-approve.php');
                             <td>" . $row['gst_number'] . "</td>
                             <td>" . $row['account_number'] . "</td>
                             <td>" . $row['IFSC_code'] . "</td>
-                            <form action='" . $_SERVER['PHP_SELF'] . "' method='POST'>
+                            <form action='/action/seller-approve.php' method='POST'>
                             <input type='text' name='seller_id' value='" . $row['seller_id'] . "' hidden/>
                             <td>";
 
