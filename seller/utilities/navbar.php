@@ -4,13 +4,13 @@
             <img src="../images/logo.png" alt="e-shop" width="140" height="120">
         </a>
     </div>
-    <form action="../action/logout.php">
     <?php
     if(isset($_SESSION['email'])) {
         echo $_SESSION['email'];
     }
     ?>
+    <form action="../action/logout.php">
         <button class="btn btn-danger" style="margin: 0 50px;">Logout</button>
-    </div>
+    </form>  
 </nav>
 <hr style="margin:0;">
