@@ -1,3 +1,8 @@
+<?php
+require('../configuration/config.php');
+require('action/auth.php');
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -34,7 +39,7 @@
                 </thead>
                 <tbody>
                     <?php
-                    include ('../configuration/config.php');
+                    include('../configuration/config.php');
 
                     $sql = "SELECT * FROM seller WHERE status = 'approved'";
                     $stmt = $conn->prepare($sql);

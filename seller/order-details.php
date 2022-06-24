@@ -1,3 +1,8 @@
+<?php
+require('../configuration/config.php');
+require('action/auth.php');
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -11,7 +16,8 @@
 
     <link rel="stylesheet" href="css/style.css">
     <style>
-        th, td {
+        th,
+        td {
             vertical-align: middle !important;
         }
     </style>

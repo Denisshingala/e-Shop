@@ -1,6 +1,6 @@
 <?php
 require('../configuration/config.php');
-require('../action/auth.php');
+require('./action/auth.php');
 require('./action/seller-approve.php');
 ?>
 <!doctype html>
@@ -58,7 +58,6 @@ require('./action/seller-approve.php');
                             <td>";
 
                             if ($row['status'] === "pending") {
-                                // echo "<input type='submit' name='approve' class='btn btn-outline-success btn-sm' value='Approve'>";
                                 echo "
                                     <span style='color:green; font-weight:bold; text-decoration:underline; cursor:pointer;' data-bs-toggle='modal' data-bs-target='#approve'>Approve</span>
                                     <!-- Modal -->

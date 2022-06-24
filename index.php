@@ -1,3 +1,9 @@
+<?php
+
+require('./action/auth.php');
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
