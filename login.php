@@ -45,7 +45,7 @@ require('./action/login.php');
             </form>
 
             <!-- User Registration -->
-            <form id="user" class="d-none" method="POST" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+            <form id="user" class="d-none" method="POST" onsubmit="userValidation()" action="<?php echo $_SERVER['PHP_SELF'] ?>">
                 <h3>User Registration</h3>
                 <div class="content">
                     <input type="text" placeholder="Name" name="username" required />
@@ -67,6 +67,7 @@ require('./action/login.php');
                     <input type="text" placeholder="State" name="userstate" required />
                     <input type="text" placeholder="Country" name="usercountry" required />
                     <input type="password" placeholder="Password" name="userpassword" required />
+                    <input type="password" placeholder="Confirm password" name="userconfirmpassword" required />
                 </div>
                 <div class="btn-group w-100">
                     <input type="reset" onclick="backUser()" class="mx-1 btn btn-outline-secondary" value="Back" />
@@ -75,7 +76,7 @@ require('./action/login.php');
             </form>
 
             <!-- Seller Registration -->
-            <form id="seller" class="d-none" method="POST" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+            <form id="seller" class="d-none" method="POST" onsubmit="sellerValidation()" action="<?php echo $_SERVER['PHP_SELF'] ?>">
                 <h3>Seller Registration</h3>
                 <div class="content">
                     <input type="text" placeholder="Company name" name="companyName" required />
@@ -86,6 +87,7 @@ require('./action/login.php');
                     <input type="text" placeholder="IFSC number" name="IFSCNumber" required />
                     <input type="text" placeholder="Company address" name="address" required />
                     <input type="password" placeholder="Password" name="password" required />
+                    <input type="password" placeholder="Confirm password" name="confirmpassword" required />
                 </div>
                 <div class="btn-group w-100">
                     <input type="reset" onclick="backSeller()" class="mx-1 btn btn-outline-secondary" value="Back" />
