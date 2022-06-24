@@ -16,7 +16,7 @@ if (isset($_POST['reject'])) {
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $id);
     if ($stmt->execute()) {
-        $success = "Successfully approved...";
+        $success = "Successfully rejected...";
     } else {
         $error = "Somthing went wrong...";
     }
