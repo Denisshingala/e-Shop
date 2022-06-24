@@ -11,7 +11,7 @@ if(isset($_POST['add-new-category-btn'])) {
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $category);
         if($stmt->execute()) {
-            echo $category . " added as category";
+            header("location: ../categories.php");
         }
         else {
             echo "Unable to add new category due to technical issue";
