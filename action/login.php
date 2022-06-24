@@ -40,16 +40,23 @@ if (isset($_POST['sellersubmit'])) {
     $password = mysqli_real_escape_string($conn, $_POST['password']);
     $newPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    $sql = "INSERT INTO `seller`(`company_name`, `email`, `password`, `contact_number`, `gst_number`, `account_number`, `IFSC_code`, `company_address`) VALUES (?,?,?,?,?,?,?,?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssssss", $name, $email, $newPassword, $contact, $GST, $accountNumber, $IFSCNumber, $address);
+    $sql = "SELECT * FROM `seller` WHERE account_number=$accountNumber";
+    $res = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($res) <= 0) {
 
-    if ($stmt->execute()) {
-        // echo "<script>alert('Data has been inserted...')</script>";
-        $success = "Congratulation! Account has been created...";
+        $sql = "INSERT INTO `seller`(`company_name`, `email`, `password`, `contact_number`, `gst_number`, `account_number`, `IFSC_code`, `company_address`) VALUES (?,?,?,?,?,?,?,?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssssssss", $name, $email, $newPassword, $contact, $GST, $accountNumber, $IFSCNumber, $address);
+
+        if ($stmt->execute()) {
+            // echo "<script>alert('Data has been inserted...')</script>";
+            $success = "Congratulation! Account has been created...";
+        } else {
+            // echo "<script>alert('Something went wrong...')</script>";
+            $error = "Oops! Something went wrong...";
+        }
     } else {
-        // echo "<script>alert('Something went wrong...')</script>";
-        $error = "Oops! Something went wrong...";
+        $error = "Oops! Account number already registered...";
     }
 }
 
