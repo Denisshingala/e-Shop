@@ -34,3 +34,4 @@ const backSeller = () => {
 	typeForm.classList.remove('d-none')
 	seller.classList.add('d-none');
 };
+

@@ -1,7 +1,7 @@
 <?php
 require('../configuration/config.php');
 require('../action/auth.php');
-require('../action/seller-approve.php');
+require('/action/seller-approve.php');
 ?>
 <!doctype html>
 <html lang="en">
