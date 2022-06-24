@@ -35,3 +35,21 @@ const backSeller = () => {
 	seller.classList.add('d-none');
 };
 
+const userValidation = (event) => {
+	let password = document.getElementById("user-pass").value;
+	let confirmpassword = document.getElementById("user-confirmpass").value;
+
+	if (password !== confirmpassword) {
+		alert('Oops! password and confirm password is not match...');
+		return false;
+	}
+}
+const sellerValidation = (event) => {
+	let password = document.getElementById("seller-pass").value;
+	let confirmpassword = document.getElementById("seller-confirmpass").value;
+
+	if (password !== confirmpassword) {
+		alert('Oops! password and confirm password is not match...');
+		return false;
+	}
+}

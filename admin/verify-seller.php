@@ -53,7 +53,11 @@ require('action/auth.php');
                             <td>" . $row['gst_number'] . "</td>
                             <td>" . $row['account_number'] . "</td>
                             <td>" . $row['IFSC_code'] . "</td>
+<<<<<<< HEAD
                             <form action='./action/seller-approve.php' method='POST'>
+=======
+                            <form action='/action/seller-approve.php' method='POST'>
+>>>>>>> 9a645480967aae75c78459130eb862d1ba6a1b82
                             <input type='text' name='seller_id' value='" . $row['seller_id'] . "' hidden/>
                             <td>";
 
