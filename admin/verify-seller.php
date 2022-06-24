@@ -34,8 +34,12 @@ require('/action/seller-approve.php');
                         <th>GST No.</th>
                         <th>Bank Account No.</th>
                         <th>IFSC code</th>
+<<<<<<< HEAD
+                        <th>Action</th>
+=======
                         <th>Approve</th>
                         <th>Reject</th>
+>>>>>>> ed6bddd4199f8868dd20b31525c2402b7438d77c
                     </tr>
                 </thead>
                 <tbody id="tbody">

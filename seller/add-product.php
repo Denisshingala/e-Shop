@@ -22,7 +22,7 @@
 
             <h4 class="p-3 pl-5 text-white" style="background-color:rgb(67, 144, 233);">Add Product</h4>
 
-            <form class="p-5">
+            <form action="" method="POST" class="p-5">
                 <div class="form-group mb-4">
                     <label for="title">Product Title</label>
                     <input type="text" class="form-control" name="title" id="title">
@@ -71,7 +71,7 @@
                     </div>
                 </div>
 
-                <button type="submit" id="add-product" name="add-prroduct" class="btn btn-primary">Add product</button>
+                <button type="submit" id="add-product-btn" name="add-product-btn" class="btn btn-primary">Add product</button>
             </form>
 
         </div>
