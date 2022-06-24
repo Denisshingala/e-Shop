@@ -40,7 +40,7 @@ require('./action/seller-approve.php');
                 </thead>
                 <tbody id="tbody">
                     <?php
-                    $sql = "select * from seller";
+                    $sql = "select * from seller where status='pending'";
                     $stmt = $conn->prepare($sql);
                     if ($stmt->execute()) {
                         $result = $stmt->get_result();
@@ -58,53 +58,56 @@ require('./action/seller-approve.php');
                             <td>";
 
                             if ($row['status'] === "pending") {
-                                echo "
-                                    <span style='color:green; font-weight:bold; text-decoration:underline; cursor:pointer;' data-bs-toggle='modal' data-bs-target='#approve'>Approve</span>
-                                    <!-- Modal -->
-                                    <div class='modal fade' id='approve' data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true'>
+                    ?>
+                                <span style='color:green; font-weight:bold; text-decoration:underline; cursor:pointer;' data-bs-toggle='modal' data-bs-target='#approve'>Approve</span>
+                                <!-- Modal -->
+                                <div class='modal fade' id='approve' data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true'>
                                     <div class='modal-dialog'>
                                         <div class='modal-content'>
-                                        <div class='modal-header'>
-                                            <h5 class='modal-title' id='staticBackdropLabel'>Modal title</h5>
-                                            <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
-                                        </div>
-                                        <div class='modal-body'>
-                                            Are you sure, you want to approve seller?
-                                        </div>
-                                        <div class='modal-footer'>
-                                            <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
-                                            <input type='submit' name='approve' class='btn btn-primary' value='Okay'>
-                                        </div>
+                                            <div class='modal-header'>
+                                                <h5 class='modal-title' id='staticBackdropLabel'>Modal title</h5>
+                                                <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                            </div>
+                                            <div class='modal-body'>
+                                                Are you sure, you want to approve seller?
+                                            </div>
+                                            <div class='modal-footer'>
+                                                <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
+                                                <input type='submit' name='approve' class='btn btn-primary' value='Okay'>
+                                            </div>
                                         </div>
                                     </div>
-                                    </div>
-                                ";
+                                </div>
+                            <?php
                             } else {
                                 echo "<span style='color:green; cursor:pointer;'>Approved</span>";
                             }
-
-                            // echo "</td><td><input type='submit' name='reject' class='btn btn-outline-danger btn-sm' value='Reject'>
-                            echo "</td><td>
+                            ?>
+                            </td>
+                            <td>
                                 <span style='color:red; font-weight:bold; text-decoration:underline; cursor:pointer;' data-bs-toggle='modal' data-bs-target='#reject'>Reject</span>
                                 <!-- Modal -->
                                 <div class='modal fade' id='reject' data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true'>
-                                <div class='modal-dialog'>
-                                    <div class='modal-content'>
-                                    <div class='modal-header'>
-                                        <h5 class='modal-title' id='staticBackdropLabel'>Modal title</h5>
-                                        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
-                                    </div>
-                                    <div class='modal-body'>
-                                        Are you sure, you want to reject seller?
-                                    </div>
-                                    <div class='modal-footer'>
-                                        <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
-                                        <input type='submit' name='reject' class='btn btn-primary' value='Okay'>
-                                    </div>
+                                    <div class='modal-dialog'>
+                                        <div class='modal-content'>
+                                            <div class='modal-header'>
+                                                <h5 class='modal-title' id='staticBackdropLabel'>Modal title</h5>
+                                                <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                            </div>
+                                            <div class='modal-body'>
+                                                Are you sure, you want to reject seller?
+                                            </div>
+                                            <div class='modal-footer'>
+                                                <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
+                                                <input type='submit' name='reject' class='btn btn-primary' value='Okay'>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                </div>
-                            </td></form></tr>";
+                            </td>
+                            </form>
+                            </tr>
+                    <?php
                         }
                     } else {
                         $error = "Something went wrong...";

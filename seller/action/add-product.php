@@ -1,41 +1,43 @@
 <?php
 require('../../configuration/config.php');
+session_start();
+$sellerID = $_SESSION['seller_id'];
 
 if(isset($_POST['add-product-btn'])) {
     $title = mysqli_real_escape_string($conn, $_POST['title']);
     $description = mysqli_real_escape_string($conn, $_POST['description']);
     $brand = mysqli_real_escape_string($conn, $_POST['brand']);
-    $category = mysqli_real_escape_string($conn, $_POST['category']);
+    $categoryID = mysqli_real_escape_string($conn, $_POST['category']);
     $price = mysqli_real_escape_string($conn, $_POST['price']);
     $discount = mysqli_real_escape_string($conn, $_POST['discount']);
     $size = mysqli_real_escape_string($conn, $_POST['size']);
     $colour = mysqli_real_escape_string($conn, $_POST['colour']);
 
-    $images = mysqli_real_escape_string($conn, $_FILES['product-images']);
-
-    print_r($images);
+    $images = $_FILES['product-images'];
     $filename = $images['name'];
     $file_tmp_name = $images['tmp_name'];
     $count = count($filename);
-    // echo $count;
     $array = array();
 
-        // for ($i = 0; $i < $count; $i++) {
-        //     $indexed_file = $filename[$i];
-        //     $path = "upload/" . $indexed_file;
-        //     move_uploaded_file($file_tmp_name[$i], $path);
-        //     array_push($array, $path);
-        // }
-        // $string = implode(",", $array);
-        // // echo $string;
+    echo "<br>";
+    for ($i = 0; $i < $count; $i++) {
+        $imageName = time() . "_" . $filename[$i];
+        echo $imageName . "<br>";
+        $path = "../../upload/" . $imageName;
+        move_uploaded_file($file_tmp_name[$i], $path);
+        $uploadPath = "upload/" . $imageName;
+        array_push($array, $uploadPath);
+    }
+    $string = implode(",", $array);
 
-        // $sql = "INSERT INTO `files_upload` (filename) VALUES ('$string')";
-        // $result = mysqli_query($conn, $sql);
-        // if ($result) {
-        //     echo "inserted";
-        // } else {
-        //     echo "not inserted";
-        // }
+    $sql = "INSERT INTO product (title, description, brand, price, discount, category_id, seller_id, image, size_available, colour_available) VALUES (?,?,?,?,?,?,?,?,?,?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssddiisss", $title, $description, $brand, $price, $discount, $categoryID, $sellerID, $string, $size, $colour);
+    if ($stmt->execute()) {
+        echo "Product added";
+    } else {
+        echo "Unable to add product due to technical issue";
+    }
 
 }
 

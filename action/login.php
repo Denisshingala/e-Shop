@@ -1,8 +1,5 @@
 <?php
 
-$success = "";
-$error = "";
-
 // user sign up 
 if (isset($_POST['usersubmit'])) {
     $name = mysqli_real_escape_string($conn, $_POST['username']);
@@ -83,6 +80,7 @@ if (isset($_POST['login'])) {
 
                     if ($row['status'] !== 'pending') {
                         $_SESSION['email'] = $row['email'];
+                        $_SESSION['seller_id'] = $row['seller_id'];
                         $success = "Congratulation! You are logged in...";
                         header("location: ./seller/dashboard.php");
                     } else {
