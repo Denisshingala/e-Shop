@@ -5,6 +5,11 @@
         </a>
     </div>
     <form action="../action/logout.php">
+    <?php
+    if(isset($_SESSION['email'])) {
+        echo $_SESSION['email'];
+    }
+    ?>
         <button class="btn btn-danger" style="margin: 0 50px;">Logout</button>
     </div>
 </nav>

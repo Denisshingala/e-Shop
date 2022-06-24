@@ -1,8 +1,8 @@
 <?php
 require('../configuration/config.php');
-require('../action/auth.php');
-require('/action/seller-approve.php');
+require('action/auth.php');
 ?>
+
 <!doctype html>
 <html lang="en">
 
@@ -53,7 +53,7 @@ require('/action/seller-approve.php');
                             <td>" . $row['gst_number'] . "</td>
                             <td>" . $row['account_number'] . "</td>
                             <td>" . $row['IFSC_code'] . "</td>
-                            <form action='" . $_SERVER['PHP_SELF'] . "' method='POST'>
+                            <form action='./action/seller-approve.php' method='POST'>
                             <input type='text' name='seller_id' value='" . $row['seller_id'] . "' hidden/>
                             <td>";
 

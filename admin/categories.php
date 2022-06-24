@@ -1,3 +1,8 @@
+<?php
+require('../configuration/config.php');
+require('action/auth.php');
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -26,7 +31,7 @@
 
         <div class="p-4">
 
-            <form action="./actions/add-category.php" method="POST" class="p-2 mb-5">
+            <form action="./action/add-category.php" method="POST" class="p-2 mb-5">
                 <div class="form-group mb-4">
                     <input type="text" class="form-control" name="category" id="category" placeholder="New Category">
                 </div>

@@ -80,6 +80,7 @@ if (isset($_POST['login'])) {
                 // echo "<script>alert('You are logged in...')</script>";
 
                 $_SESSION['type'] = $type;
+                // TODO : PUT ALL IN ELSE IF
                 if ($type === "seller") {
 
                     if ($row['status'] !== 'pending') {

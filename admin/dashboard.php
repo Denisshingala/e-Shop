@@ -1,6 +1,6 @@
 <?php
 require('../configuration/config.php');
-require('../action/auth.php');
+require('action/auth.php');
 ?>
 
 <!doctype html>

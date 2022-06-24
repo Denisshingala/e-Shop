@@ -1,3 +1,8 @@
+<?php
+require('../configuration/config.php');
+require('action/auth.php');
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -22,10 +27,10 @@
 
             <h4 class="p-3 pl-5 text-white" style="background-color:rgb(67, 144, 233);">Add Product</h4>
 
-            <form action="" method="POST" class="p-5">
+            <form action="./action/add-product.php" method="POST" class="p-5">
                 <div class="form-group mb-4">
                     <label for="title">Product Title</label>
-                    <input type="text" class="form-control" name="title" id="title">
+                    <input type="text" class="form-control" name="title" id="title" required>
                 </div>
 
                 <div class="form-group mb-4">
@@ -35,7 +40,7 @@
 
                 <div class="mb-4">
                     <label for="images" class="form-label">Product Images</label>
-                    <input class="form-control" name="product-images" id="product-images" enctype="multipart/form-data" multiple type="file">
+                    <input class="form-control" name="product-images[]" id="product-images" enctype="multipart/form-data" multiple type="file" required>
                 </div>
 
                 <div class="form-row mb-4">
@@ -45,14 +50,14 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label for="category">Category</label>
-                        <select id="category" name="category" class="form-control">
+                        <select id="category" name="category" class="form-control" required>
                             <option selected>Choose...</option>
                             <option>...</option>
                         </select>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="price">Price (Rs.)</label>
-                        <input type="number" class="form-control" name="price" id="price">
+                        <input type="number" class="form-control" name="price" id="price" required>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="price">Discount (%)</label>
