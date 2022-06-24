@@ -66,10 +66,6 @@ require('action/auth.php');
                         }
                     }
                     ?>
-                    <tr>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                    </tr>
                 </tbody>
             </table>
 
