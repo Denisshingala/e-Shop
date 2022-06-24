@@ -31,14 +31,16 @@
                     <tr style="background-color: rgb(95, 162, 240);">
                         <th>Invoice Number</th>
                         <th>Payment Method</th>
-                        <th>Amount</th>
                         <th>Transaction id</th>
+                        <th>Payment Date</th>
+                        <th>Amount</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>Mark</td>
                         <td>Cash On Delivery</td>
+                        <td>Otto</td>
                         <td>Otto</td>
                         <td>Otto</td>
                     </tr>

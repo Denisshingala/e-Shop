@@ -20,7 +20,7 @@
 
         <div class="p-4">
 
-            <table class="table table-bordered table-responsive table-striped">
+            <table class="table table-bordered table-responsive table-striped" id="myTable">
                 <thead class="text-center">
                     <tr style="background-color: rgb(95, 162, 240);">
                         <th>Company Name</th>
@@ -30,24 +30,30 @@
                         <th>GST No.</th>
                         <th>Bank Account No.</th>
                         <th>IFSC code</th>
-                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>
-                            <span style="color:green; font-weight:bold; margin:5px;">Approve</span>
-                            <span style="color:red; font-weight:bold; margin:5px;">Reject</span>
-                        </td>
-                    </tr>
+                    <?php
+                    include ('../configuration/config.php');
+
+                    $sql = "SELECT * FROM seller WHERE status = 'approved'";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<tr>
+									<td>' . $row['company_name'] . '</td>
+									<td>' . $row['email'] . '</td>
+									<td>' . $row['contact_number'] . '</td>
+									<td>' . $row['company_address'] . '</td>
+									<td>' . $row['gst_number'] . '</td>
+									<td>' . $row['account_number'] . '</td>
+									<td>' . $row['IFSC_code'] . '</td>
+								</tr>';
+                        }
+                    }
+                    ?>
                 </tbody>
             </table>
 
@@ -58,5 +64,7 @@
     <script src="/docs/5.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 </body>
+
+<?php include('utilities/datatable.php') ?>
 
 </html>
