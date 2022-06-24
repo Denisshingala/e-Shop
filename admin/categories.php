@@ -56,8 +56,8 @@ require('action/auth.php');
                     $stmt->execute();
                     $result = $stmt->get_result();
                     if ($result->num_rows > 0) {
+                        $counter = 1;
                         while ($row = $result->fetch_assoc()) {
-                            $counter = 1;
                             echo '<tr>
 									<td>' . $counter . '</td>
 									<td>' . $row['category_name'] . '</td>
