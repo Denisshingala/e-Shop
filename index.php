@@ -16,6 +16,7 @@ require('./action/auth.php');
 </head>
 
 <body>
+    <?php include('action/loader.php') ?>
     <a href="login.php" class="btn btn-primary m-5">login</a>
 </body>
 

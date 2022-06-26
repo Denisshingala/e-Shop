@@ -110,7 +110,7 @@ require('./action/login.php');
                 </select>
                 <input type="email" placeholder="Email" name="email" required />
                 <input type="password" placeholder="Password" name="password" required />
-                <a href="#">Forgot your password?</a>
+                <a href="./forget-password.php">Forgot your password?</a>
                 <input type="submit" class="btn btn-primary w-100" name="login" value="Sign In">
             </form>
         </div>
