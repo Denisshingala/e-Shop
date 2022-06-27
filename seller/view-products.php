@@ -50,7 +50,6 @@ require('action/auth.php');
                 </thead>
                 <tbody>
                     <?php
-                    include('../configuration/config.php');
 
                     $sql = "SELECT * FROM product JOIN category ON product.category_id = category.category_id WHERE seller_id = ?";
                     $stmt = $conn->prepare($sql);
