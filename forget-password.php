@@ -1,7 +1,6 @@
 <?php
 
 require('./configuration/config.php');
-require('./action/auth.php');
 
 if (isset($_POST['submit1'])) {
     $type = mysqli_real_escape_string($conn, $_POST['type']);

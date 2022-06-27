@@ -1,6 +1,9 @@
 <?php
 require('../configuration/config.php');
 require('action/auth.php');
+require('action/delete-product.php');
+require('action/update-product.php');
+
 ?>
 
 <!doctype html>
@@ -11,14 +14,36 @@ require('action/auth.php');
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <title>e-Shop | Seller</title>
-
-    <?php include('utilities/header.php') ?>
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/style.css">
     <style>
         th,
         td {
             vertical-align: middle !important;
+        }
+
+        .newprize {
+            color: #B12704;
+        }
+
+        .oldprize {
+            color: #565959;
+            text-decoration: line-through;
+        }
+
+        .card-btn {
+            width: 100px;
+            margin: 3px;
+        }
+
+        .modal-dialog {
+            max-width: 800px !important;
+        }
+
+        label {
+            font-weight: bold;
         }
     </style>
 </head>
@@ -27,79 +52,154 @@ require('action/auth.php');
     <?php include('utilities/navbar.php') ?>
 
     <main class="d-flex">
-        <?php include('utilities/side-navbar.php') ?>
+        <?php include('utilities/side-navbar.php'); ?>
+        <div class="p-2 w-100">
+            <?php include('utilities/error-success.php') ?>
 
-        <div class="p-2">
+            <div class="d-flex flex-wrap">
 
-            <table class="table table-bordered table-responsive table-striped text-center my-auto" id="myTable">
-                <thead>
-                    <tr style="background-color: rgb(95, 162, 240);">
-                        <th>Product Title</th>
-                        <th style="max-width:300px;">Description</th>
-                        <th>Brand</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th>Discount</th>
-                        <th>Images</th>
-                        <th>Selling Price</th>
-                        <th>Sizes</th>
-                        <th>Colours</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    include('../configuration/config.php');
+                <!-- product card -->
+                <?php
+                $sql = "SELECT * FROM product JOIN category ON product.category_id = category.category_id WHERE seller_id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $_SESSION['seller_id']);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $size = $row['size_available'];
+                        if ($size == NULL)
+                            $size = '--';
 
-                    $sql = "SELECT * FROM product JOIN category ON product.category_id = category.category_id WHERE seller_id = ?";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->bind_param("i", $_SESSION['seller_id']);
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            $size = $row['size_available'];
-                            if ($size == NULL)
-                                $size = '--';
+                        $colour = $row['colour_available'];
+                        if ($colour == NULL)
+                            $colour = '--';
 
-                            $colour = $row['colour_available'];
-                            if ($colour == NULL)
-                                $colour = '--';
+                        $sellingPrice = $row['price'] - ($row['price'] * $row['discount'] / 100);
+                        $images = explode(',', $row['image']);
+                        $count = 1;
+                ?>
+                        <div class="card m-1" style="width: 18rem;">
+                            <div class="card-body text-center">
+                                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        <?php
+                                        foreach ($images as $image) {
+                                            if ($count === 1)
+                                                echo '<div class="carousel-item active">';
+                                            else
+                                                echo '<div class="carousel-item">';
+                                            echo '<img src="../' . $image . '" class="d-block w-100" alt="' . $row['title'] . '"/></div>';
+                                            $count++;
+                                        } ?>
+                                    </div>
+                                    <hr>
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                                <h5 class="card-title fw-bold"><?php echo $row['brand'] ?></h5>
+                                <h6 class="text-truncate text-wrap pb-2" style="max-height:120px;"><?php echo $row['title'] ?></h6>
+                                <p><span class="newprize h3">&#8377;<?php echo $sellingPrice ?></span> <span class="oldprize">&#8377;<?php echo $row['price'] ?></span> (<?php echo $row['discount'] ?>% off)</p>
 
-                            $sellingPrice = $row['price'] - ($row['price'] * $row['discount'] / 100);
+                                <!-- Model form  -->
+                                <button type="button" class="card-btn btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop<?php echo $row['product_id'] ?>">
+                                    Edit
+                                </button>
 
-                            $images = explode(',', $row['image']);
+                                <!-- Modal -->
+                                <div class="modal fade text-left" id="staticBackdrop<?php echo $row['product_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="staticBackdropLabel">Update product details</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
+                                                <div class="modal-body bg-light">
+                                                    <input type="text" name="id" value="<?php echo $row['product_id'] ?>" hidden />
+                                                    <div class="form-group mb-4">
+                                                        <label for="title">Product Title</label>
+                                                        <input type="text" class="form-control" name="title" id="title" value="<?php echo $row['title'] ?> " required>
+                                                    </div>
 
-                            $imageString = "";
-                            foreach($images as $image) {
-                                $imageString .= '<img src="../' . $image . '" width="100" height="80"> <br><br>';
-                            }
+                                                    <div class="form-group mb-4">
+                                                        <label for="description">Product Description</label>
+                                                        <br><textarea name="description" id="description" cols="135" rows="4" class="form-control" style="resize: none;"><?php echo $row['description'] ?></textarea>
+                                                    </div>
 
-                            echo '<tr>
-									<td>' . $row['title'] . '</td>
-									<td style="max-width:300px; word-wrap: break-word;">' . $row['description'] . '</td>
-                                    <td>' . $row['brand'] . '</td>
-                                    <td>' . $row['category_name'] . '</td>
-									<td>' . $row['price'] . '</td>
-									<td>' . $row['discount'] . '%</td>
-                                    <td>' . $imageString . '</td>
-									<td>' . $sellingPrice . '</td>
-									<td>' . $size . '</td>
-                                    <td>' . $colour . '</td>
-                                    <td>
-                                        <a href="#" style="color:green; font-weight:bold; text-decoration:underline; cursor:pointer;">Edit</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" style="color:red; font-weight:bold; text-decoration:underline; cursor:pointer;">Delete</a>
-                                    </td>
-								</tr>';
-                        }
+                                                    <div class="form-row mb-4">
+                                                        <div class="form-group col-md-3">
+                                                            <label for="brand">Brand Name</label>
+                                                            <input type="text" class="form-control" name="brand" id="brand" value="<?php echo $row['brand'] ?> ">
+                                                        </div>
+                                                        <div class="form-group col-md-3">
+                                                            <label for="category">Category</label>
+                                                            <select id="category" name="category" class="form-control" value="<?php echo $row['category_id'] ?> " required>
+                                                                <option disabled> - Select - </option>
+                                                                <?php
+                                                                $sql1 = "SELECT * FROM category";
+                                                                $stmt1 = $conn->prepare($sql1);
+                                                                $stmt1->execute();
+                                                                $result1 = $stmt1->get_result();
+                                                                if ($result1->num_rows > 0) {
+                                                                    while ($row1 = $result1->fetch_assoc()) {
+                                                                        if ($row1['category_id'] == $row['category_id'])
+                                                                            echo '<option value="' . $row1['category_id'] . '" selected>' . $row1['category_name'] . '</option>';
+                                                                        else
+                                                                            echo '<option value="' . $row1['category_id'] . '">' . $row1['category_name'] . '</option>';
+                                                                    }
+                                                                }
+                                                                ?>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group col-md-3">
+                                                            <label for="price">Price (Rs.)</label>
+                                                            <input type="number" class="form-control" name="price" id="price" value=<?php echo $row['price'] ?> required>
+                                                        </div>
+                                                        <div class="form-group col-md-3">
+                                                            <label for="price">Discount (%)</label>
+                                                            <input type="number" class="form-control" name="discount" id="discount" value=<?php echo $row['discount'] ?> maxlength="100">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-row mb-2">
+                                                        <div class="form-group col-md-6 mb-4">
+                                                            <label for="size">Sizes available<br>(comma separated, if applicable)</label>
+                                                            <input type="text" class="form-control" name="size" id="size" value="<?php echo $row['size_available'] ?> ">
+                                                        </div>
+                                                        <div class="form-group col-md-6 mb-4">
+                                                            <label for="size">Colours available<br>(comma separated, if applicable)</label>
+                                                            <input type="text" class="form-control" name="colour" id="colour" value="<?php echo $row['colour_available'] ?> ">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <input type="submit" name="update" class="btn btn-primary" value="Submit">
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" class='d-inline'>
+                                    <!-- <input type="submit" name="edit" class="card-btn btn btn-primary" value="Edit"> -->
+                                    <?php echo '<input type="text" name="id" value="' . $row['product_id'] . '" hidden/>'; ?>
+                                    <input type="submit" name="delete" class="card-btn btn btn-danger" value="Delete">
+                                </form>
+                            </div>
+                        </div>
+                <?php
                     }
-                    ?>
-                </tbody>
-            </table>
-
+                }
+                ?>
+            </div>
         </div>
 
     </main>

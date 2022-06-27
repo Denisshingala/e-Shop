@@ -1,6 +1,7 @@
 <?php
 require('../configuration/config.php');
 require('action/auth.php');
+require('./action/add-product.php');
 ?>
 
 <!doctype html>
@@ -24,10 +25,11 @@ require('action/auth.php');
         <?php include('utilities/side-navbar.php') ?>
 
         <div style="width:100%;">
+            <?php include('utilities/error-success.php') ?>
 
             <h4 class="p-3 pl-5 text-white" style="background-color:rgb(67, 144, 233);">Add Product</h4>
 
-            <form action="./action/add-product.php" method="POST" class="p-5" enctype="multipart/form-data">
+            <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" class="p-5" enctype="multipart/form-data">
                 <div class="form-group mb-4">
                     <label for="title">Product Title</label>
                     <input type="text" class="form-control" name="title" id="title" required>
@@ -53,8 +55,6 @@ require('action/auth.php');
                         <select id="category" name="category" class="form-control" required>
                             <option selected disabled>Choose...</option>
                             <?php
-                            include('../configuration/config.php');
-
                             $sql = "SELECT * FROM category";
                             $stmt = $conn->prepare($sql);
                             $stmt->execute();

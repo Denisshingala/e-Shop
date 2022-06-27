@@ -1,6 +1,4 @@
 <?php
-require('../../configuration/config.php');
-session_start();
 $sellerID = $_SESSION['seller_id'];
 
 if(isset($_POST['add-product-btn'])) {
@@ -34,11 +32,10 @@ if(isset($_POST['add-product-btn'])) {
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sssddiisss", $title, $description, $brand, $price, $discount, $categoryID, $sellerID, $string, $size, $colour);
     if ($stmt->execute()) {
-        echo "Product added";
+        $success = "Product added";
     } else {
-        echo "Unable to add product due to technical issue";
+        $error = "Unable to add product due to technical issue";
     }
-
 }
 
 ?>
