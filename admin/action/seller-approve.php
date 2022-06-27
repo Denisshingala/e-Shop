@@ -1,7 +1,6 @@
 <?php
 if (isset($_POST['approve'])) {
     $id = mysqli_real_escape_string($conn, $_POST['seller_id']);
-    echo $id;
     $sql = "UPDATE seller SET status='approve' where seller_id=?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $id);
