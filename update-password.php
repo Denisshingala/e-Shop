@@ -2,10 +2,22 @@
 
 require('./configuration/config.php');
 require('./action/auth.php');
+$flag = false;
 
 if (isset($_GET['type']) && isset($_GET['id'])) {
     $type = openssl_decrypt($_GET['type'], $encryptionAlgo, $encryptionKey, 0, $initVector);
     $email = openssl_decrypt($_GET['id'], $encryptionAlgo, $encryptionKey, 0, $initVector);
+
+    if ($type == "seller" || $type == "user") {
+        $sql = "SELECT * FROM " . $type . " WHERE email=?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        if ($res->num_rows > 0) {
+            $flag = true;
+        }
+    }
 } else {
     header("location:/e-shop");
 }
@@ -62,20 +74,27 @@ if (isset($_POST['submit'])) {
             $success
             <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
     }
-    ?>
 
-    <div class="container-fluid">
-        <img src="./images/logo.png" alt="logo" width="150" height="150" class="img-fluid">
-        <hr class="mt-0 mb-4" />
-        <h2 class="fw-bold">Forget Password</h2>
-        <form class="p-4" id="form2" method="POST" onsubmit="return passwordverify()">
-            <input type="text" name="type" value="<?php echo $type ?>" hidden>
-            <input type="text" name="email" value="<?php echo $email ?>" hidden>
-            <input type="password" name="password" id="pass" class="form-control w-100 fw-light" placeholder="Enter your password" /> <br />
-            <input type="text" id="repass" class="form-control w-100 fw-light" placeholder="Confirm password" />
-            <input type="submit" name="submit" class="btn btn-danger w-100 my-3" />
-        </form>
-    </div>
+    if ($flag) { ?>
+
+        <div class="container-fluid">
+            <img src="./images/logo.png" alt="logo" width="150" height="150" class="img-fluid">
+            <hr class="mt-0 mb-4" />
+            <h2 class="fw-bold">Forget Password</h2>
+            <form class="p-4" id="form2" method="POST" onsubmit="return passwordverify()">
+                <input type="text" name="type" value="<?php echo $type ?>" hidden>
+                <input type="text" name="email" value="<?php echo $email ?>" hidden>
+                <input type="password" name="password" id="pass" class="form-control w-100 fw-light" placeholder="Enter your new password" /> <br />
+                <input type="text" id="repass" class="form-control w-100 fw-light" placeholder="Confirm password" />
+                <input type="submit" name="submit" class="btn btn-danger w-100 my-3" />
+            </form>
+        </div>
+    <?php } else { ?>
+        <div class="container-fluid error-container">
+            <img src="./images/error.gif" alt="error" width="300" height="300" class="img-fluid">
+            <p><strong>Oops!</strong>&nbsp; Invalid Token</p>
+        </div>
+    <?php } ?>
     <script>
         const passwordverify = () => {
             let pass = document.getElementById('pass').value;
