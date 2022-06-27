@@ -1,9 +1,9 @@
 <style>
     #loader {
-        position: relative;
+        position: fixed;
         top: 0%;
         left: 0%;
-        z-index: -100;
+        z-index: 999;
         height: 100vh;
         width: 100vw;
         margin: 0%;
@@ -13,6 +13,7 @@
         justify-content: center;
         align-items: center;
         flex-direction: row;
+        background: white;
     }
 
     .container {
@@ -25,10 +26,10 @@
         background: black;
         border: none;
         border-radius: 50%;
-        width: 20px;
-        height: 20px;
+        width: 15px;
+        height: 15px;
         list-style: none;
-        animation: loader 1500ms ease;
+        animation: loader 1250ms ease;
         animation-iteration-count: infinite;
     }
 
@@ -37,11 +38,11 @@
     }
 
     li:nth-child(2) {
-        animation-delay: 300ms;
+        animation-delay: 250ms;
     }
 
     li:nth-child(3) {
-        animation-delay: 600ms;
+        animation-delay: 500ms;
     }
 
     @keyframes loader {
