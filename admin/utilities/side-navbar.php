@@ -15,11 +15,6 @@ $filename = basename($_SERVER['REQUEST_URI']);
             </a>
         </li>
         <li>
-            <a href="verify-product.php" class="nav-link text-white <?php echo ($filename == 'verify-product.php') ? 'active' : ''; ?>">
-                Verify Product
-            </a>
-        </li>
-        <li>
             <a href="categories.php" class="nav-link text-white <?php echo ($filename == 'categories.php') ? 'active' : ''; ?>">
                 Categories
             </a>

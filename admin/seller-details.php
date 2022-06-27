@@ -41,7 +41,7 @@ require('action/auth.php');
                     <?php
                     include('../configuration/config.php');
 
-                    $sql = "SELECT * FROM seller WHERE status = 'approved'";
+                    $sql = "SELECT * FROM seller WHERE status = 'approve'";
                     $stmt = $conn->prepare($sql);
                     $stmt->execute();
                     $result = $stmt->get_result();
