@@ -257,8 +257,8 @@ $productID = $_GET['pid'];
         </div>
         <div class="row px-xl-5">
             <div class="col">
-                 <div class="owl-carousel related-carousel d-flex justify-content-between">
-        
+                <div class="owl-carousel related-carousel d-flex justify-content-between">
+
                     <?php
                     $sql1 = "SELECT * FROM product WHERE category_id=? ORDER BY RAND() LIMIT 5";
                     $stmt1 = $conn->prepare($sql1);
@@ -271,13 +271,13 @@ $productID = $_GET['pid'];
                             $images = explode(',', $row1['image']);
 
                             $cards .= '<div class="card product-item border-0 w-25">
-                                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                            <img class="img-fluid w-100" src="' . $images[0] . '" alt="">
+                                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-4 overflow-hidden" style="object-fit: contain;">
+                                            <img src="' . $images[0] . '" alt="" style="object-fit:contain; width: 100%; height: 50vh;">
                                         </div>
-                                        <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                                        <div class="card-body border-left border-right text-center p-4">
                                             <h6 class="text-truncate mb-3">' . $row1['title'] . '</h6>
                                             <div class="d-flex justify-content-center">
-                                                <h6>$123.00</h6>
+                                                <h6>&#8377; '. ($row1['price'] - ($row1['price'] * $row1['discount'] / 100)) .'</h6>
                                                 <h6 class="text-muted ml-2"><del>' . $row1['price'] . '</del></h6>
                                             </div>
                                         </div>
