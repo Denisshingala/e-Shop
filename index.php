@@ -31,139 +31,55 @@ require('./configuration/config.php');
 
 <body>
     <!-- Topbar Start -->
-    <div class="container-fluid">
-        <div class="row align-items-center px-xl-5">
-            <div class="col-lg-3 d-none d-lg-block">
-                <a href="" class="text-decoration-none">
-                    <!-- <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1> -->
-                    <img src="./images/logo.png" alt="e-Shop" width="140" height="130">
-                </a>
-            </div>
-            <div class="col-lg-6 col-6 text-left">
-                <form action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products">
-                        <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
-                                <i class="fa fa-search"></i>
-                            </span>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="col-lg-3 col-6 text-right">
-                <a href="" class="btn border">
-                    <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge">0</span>
-                </a>
-            </div>
-        </div>
-    </div>
+    
     <!-- Topbar End -->
 
 
-    <!-- Navbar Start -->
-    <div class="container-fluid mb-5">
-        <div class="row border-top px-xl-5">
-            <div class="col-lg-3 d-none d-lg-block">
-                <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
-                    <h6 class="m-0">Categories</h6>
-                    <i class="fa fa-angle-down text-dark"></i>
-                </a>
-                <nav class="collapse show navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0" id="navbar-vertical">
-                    <div class="navbar-nav w-100 overflow-hidden">
+    <?php include('./utilities/navbar.php'); ?>
 
-                        <?php
-                        $sql = "SELECT category_name FROM category";
-                        $stmt = $conn->prepare($sql);
-                        $stmt->execute();
-                        $result = $stmt->get_result();
-                        if ($result->num_rows > 0) {
-                            $categories = "";
-                            while ($row = $result->fetch_assoc()) {
-                                $categories .= '<a href="#" class="nav-item nav-link">' . $row['category_name'] . '</a>';
-                            }
-                            echo $categories;
-                        }
-                        ?>
+    <!-- Carousel Start -->
+    <div id="header-carousel" class="carousel slide my-3" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item" style="height: 410px;">
+                <img class="img-fluid" src="images/banners/banner-16.jpg" alt="Image">
+                <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                    <div class="p-3" style="max-width: 700px;">
+                        <h3 class="display-4 text-white font-weight-semi-bold mb-4">Quality Product</h3>
+                        <!-- <a href="" class="btn btn-light py-2 px-3">Shop Now</a> -->
                     </div>
-                </nav>
+                </div>
             </div>
-            <div class="col-lg-9">
-                <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
-                    <a href="" class="text-decoration-none d-block d-lg-none">
-                        <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
-                    </a>
-                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                        <div class="navbar-nav mr-auto py-0">
-                            <a href="index.html" class="nav-item nav-link active">Home</a>
-                            <a href="shop.html" class="nav-item nav-link">Shop</a>
-                            <a href="detail.html" class="nav-item nav-link">Shop Detail</a>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
-                                <div class="dropdown-menu rounded-0 m-0">
-                                    <a href="cart.html" class="dropdown-item">Shopping Cart</a>
-                                    <a href="checkout.html" class="dropdown-item">Checkout</a>
-                                </div>
-                            </div>
-                            <a href="contact.html" class="nav-item nav-link">Contact</a>
-                            TODO
-                        </div>
-                        <div class="navbar-nav ml-auto py-0">
-                            <a href="login.php" class="nav-item nav-link">Login</a>
-                            <a href="login.php" class="nav-item nav-link">Register</a>
-                        </div>
+            <div class="carousel-item active" style="height: 410px;">
+                <img class="img-fluid" src="images/categories/category-1.jpg" alt="Image">
+                <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                    <div class="p-3" style="max-width: 700px;">
+                        <h3 class="display-4 text-white font-weight-semi-bold mb-4">Fashionable Shoes</h3>
+                        <!-- <a href="" class="btn btn-light py-2 px-3">Shop Now</a> -->
                     </div>
-                </nav>
-
-                <div id="header-carousel" class="carousel slide" data-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item" style="height: 410px;">
-                            <img class="img-fluid" src="images/banners/banner-16.jpg" alt="Image">
-                            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                                <div class="p-3" style="max-width: 700px;">
-                                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">Quality Product</h3>
-                                    <!-- <a href="" class="btn btn-light py-2 px-3">Shop Now</a> -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item active" style="height: 410px;">
-                            <img class="img-fluid" src="images/categories/category-1.jpg" alt="Image">
-                            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                                <div class="p-3" style="max-width: 700px;">
-                                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">Fashionable Shoes</h3>
-                                    <!-- <a href="" class="btn btn-light py-2 px-3">Shop Now</a> -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item" style="height: 410px;">
-                            <img class="img-fluid" src="images/products/product-10.jpg" alt="Image">
-                            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                                <div class="p-3" style="max-width: 700px;">
-                                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">Reasonable Price</h3>
-                                    <!-- <a href="" class="btn btn-light py-2 px-3">Shop Now</a> -->
-                                </div>
-                            </div>
-                        </div>
+                </div>
+            </div>
+            <div class="carousel-item" style="height: 410px;">
+                <img class="img-fluid" src="images/products/product-10.jpg" alt="Image">
+                <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                    <div class="p-3" style="max-width: 700px;">
+                        <h3 class="display-4 text-white font-weight-semi-bold mb-4">Reasonable Price</h3>
+                        <!-- <a href="" class="btn btn-light py-2 px-3">Shop Now</a> -->
                     </div>
-                    <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
-                        <div class="btn btn-dark" style="width: 45px; height: 45px;">
-                            <span class="carousel-control-prev-icon mb-n2"></span>
-                        </div>
-                    </a>
-                    <a class="carousel-control-next" href="#header-carousel" data-slide="next">
-                        <div class="btn btn-dark" style="width: 45px; height: 45px;">
-                            <span class="carousel-control-next-icon mb-n2"></span>
-                        </div>
-                    </a>
                 </div>
             </div>
         </div>
+        <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
+            <div class="btn btn-dark" style="width: 45px; height: 45px;">
+                <span class="carousel-control-prev-icon mb-n2"></span>
+            </div>
+        </a>
+        <a class="carousel-control-next" href="#header-carousel" data-slide="next">
+            <div class="btn btn-dark" style="width: 45px; height: 45px;">
+                <span class="carousel-control-next-icon mb-n2"></span>
+            </div>
+        </a>
     </div>
-    <!-- Navbar End -->
+    <!-- Carousel End -->
 
 
     <!-- Featured Start -->
@@ -297,17 +213,17 @@ require('./configuration/config.php');
                     $cards .= '<div class="col-lg-3 col-md-6 col-sm-12 pb-4" style="height:450px;">
                                     <div class="card product-item border-0 mb-4">
                                         <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0 d-flex align-items-center" style="height:250px;">
-                                            <img class="img-fluid w-100" style="object-fit: contain; background: rgba(245, 245, 245, 0.5);" src="./' . $images[0] . '" alt="">
+                                            <img class="img-fluid w-100" style="object-fit: contain; background: rgba(245, 245, 245, 0.5); height:250px;" src="./' . $images[0] . '" alt="">
                                         </div>
                                         <div class="card-body border-left border-right text-center px-3 pt-4 pb-3">
                                             <h6 class="text-truncate mb-3">' . $row['title'] . '</h6>
                                             <div class="d-flex justify-content-center">
-                                                <h6>&#x20b9 ' . $row['price'] - ($row['price'] * $row['discount'] / 100) . '</h6>
+                                                <h6>&#x20b9 ' . ($row['price'] - ($row['price'] * $row['discount'] / 100)) . '</h6>
                                                 <small class="text-muted ml-2"><del>&#x20b9 ' . $row['price'] . '</del></small>
                                             </div>
                                         </div>
                                         <div class="card-footer d-flex justify-content-between bg-light border">
-                                            <a href="product-detail.php?pid='.$row['product_id'].'" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
+                                            <a href="product-detail.php?pid=' . $row['product_id'] . '" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
                                                 Detail</a>
                                             <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
                                         </div>
