@@ -302,7 +302,7 @@ require('./configuration/config.php');
                                         <div class="card-body border-left border-right text-center px-3 pt-4 pb-3">
                                             <h6 class="text-truncate mb-3">' . $row['title'] . '</h6>
                                             <div class="d-flex justify-content-center">
-                                                <h6>&#x20b9 ' . $row['price'] - ($row['price'] * $row['discount'] / 100) . '</h6>
+                                                <h6>&#x20b9 ' . ($row['price'] - ($row['price'] * $row['discount'] / 100)) . '</h6>
                                                 <small class="text-muted ml-2"><del>&#x20b9 ' . $row['price'] . '</del></small>
                                             </div>
                                         </div>

@@ -28,7 +28,7 @@ if(isset($_POST['add-product-btn'])) {
     }
     $string = implode(",", $array);
 
-    $sql = "INSERT INTO product (title, description, brand, price, discount, category_id, seller_id, image, size_available, colour_available) VALUES (?,?,?,?,?,?,?,?,?,?)";
+    $sql = `INSERT INTO product (title, description, brand, price, discount, category_id, seller_id, image, size_available, colour_available) VALUES (?,?,?,?,?,?,?,?,?,?)`;
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sssddiisss", $title, $description, $brand, $price, $discount, $categoryID, $sellerID, $string, $size, $colour);
     if ($stmt->execute()) {
