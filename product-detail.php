@@ -255,7 +255,7 @@ $productID = $_GET['pid'];
         <div class="text-center mb-4">
             <h2 class="section-title px-5"><span class="px-2">You May Also Like</span></h2>
         </div>
-        <div class="row px-xl-5">
+        <!-- <div class="row px-xl-5">
             <div class="col">
                  <div class="owl-carousel related-carousel d-flex justify-content-between">
         
@@ -293,7 +293,7 @@ $productID = $_GET['pid'];
 
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
     <!-- Products End -->
 

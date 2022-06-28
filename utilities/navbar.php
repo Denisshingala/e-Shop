@@ -1,8 +1,11 @@
+<?php
+session_start();
+?>
+
 <div class="container-fluid">
     <div class="row align-items-center px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
-            <a href="" class="text-decoration-none">
-                <!-- <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1> -->
+            <a href="index.php" class="text-decoration-none">
                 <img src="./images/logo.png" alt="e-Shop" width="140" height="130">
             </a>
         </div>
@@ -18,15 +21,23 @@
                 </div>
             </form>
         </div>
-        <div class="col-lg-3 col-6 text-right">
-            <a href="" class="btn border">
-                <i class="fas fa-shopping-cart text-primary"></i>
-                <span class="badge">0</span>
-            </a>
-        </div>
+        <?php
+        if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') {
+        ?>
+            <div class="col-lg-3 col-6 text-right">
+                <a href="" class="btn border">
+                    <i class="fas fa-shopping-cart text-primary"></i>
+                    <span class="badge">0</span>
+                </a>
+            </div>
+
+        <?php
+        }
+        ?>
     </div>
 </div>
 
+<hr>
 
 <div class="container-fluid">
     <div class="row px-5">
@@ -76,10 +87,19 @@
                         </div>
                         <a href="contact.html" class="nav-item nav-link">Contact</a>
                     </div>
-                    <div class="navbar-nav ml-auto py-0">
-                        <a href="login.php" class="nav-item nav-link">Login</a>
-                        <a href="login.php" class="nav-item nav-link">Register</a>
-                    </div>
+                    <?php
+                    if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') {
+                        echo '<div class="navbar-nav ml-auto py-0">
+                                <a href="./action/logout.php" class="nav-item nav-link">Logout</a>
+                            </div>';
+                    } else {
+                        echo '<div class="navbar-nav ml-auto py-0">
+                                <a href="login.php" class="nav-item nav-link">Login</a>
+                                <a href="login.php" class="nav-item nav-link">Register</a>
+                            </div>';
+                    }
+                    ?>
+
                 </div>
             </nav>
         </div>
