@@ -31,7 +31,7 @@ require('./configuration/config.php');
 
 <body>
     <!-- Topbar Start -->
-    
+
     <!-- Topbar End -->
 
 
@@ -121,7 +121,7 @@ require('./configuration/config.php');
         </div>
         <div class="row px-xl-5 pb-3">
             <?php
-            $sql = "SELECT category_name FROM category LIMIT 6";
+            $sql = "SELECT * FROM category LIMIT 6";
             $stmt = $conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -150,7 +150,7 @@ require('./configuration/config.php');
                         echo '<div class="col-lg-4 col-md-6 pb-1">
                             <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
                                 <p class="text-right">' . $countProduct . ' Products</p>
-                                <a href="" class="cat-img position-relative overflow-hidden mb-3">
+                                <a href="products.php?cid=' . $row['category_id'] . '" class="cat-img position-relative overflow-hidden mb-3">
                                     <img class="img-fluid" src="./' . $image . '" alt="" style="width:100%; height:250px;">
                                 </a>
                                 <h5 class="font-weight-semi-bold m-0">' . $category . '</h5>

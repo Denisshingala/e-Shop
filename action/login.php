@@ -98,7 +98,13 @@ if (isset($_POST['login'])) {
                     $_SESSION['email'] = $row['email'];
                     $success = "Congratulation! You are logged in...";
 
-                    $type === "user" ? header("/login.php") : header("location:./admin/dashboard.php");
+                    if($type === "user") {
+                        $_SESSION['user_id'] = $row['user_id'];
+                        header("location: ./index.php");
+                    }
+                    else {
+                        header("location:./admin/dashboard.php");
+                    }
                 }
             } else {
                 // echo "<script>alert('Your password is wrong...')</script>";
