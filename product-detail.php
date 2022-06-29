@@ -255,45 +255,6 @@ $productID = $_GET['pid'];
         <div class="text-center mb-4">
             <h2 class="section-title px-5"><span class="px-2">You May Also Like</span></h2>
         </div>
-        <!-- <div class="row px-xl-5">
-            <div class="col">
-                 <div class="owl-carousel related-carousel d-flex justify-content-between">
-        
-                    <?php
-                    $sql1 = "SELECT * FROM product WHERE category_id=? ORDER BY RAND() LIMIT 5";
-                    $stmt1 = $conn->prepare($sql1);
-                    $stmt1->bind_param("i", $categoryID);
-                    $stmt1->execute();
-                    $result1 = $stmt1->get_result();
-                    if ($result1->num_rows > 0) {
-                        $cards = "";
-                        while ($row1 = $result1->fetch_assoc()) {
-                            $images = explode(',', $row1['image']);
-
-                            $cards .= '<div class="card product-item border-0 w-25">
-                                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                            <img class="img-fluid w-100" src="' . $images[0] . '" alt="">
-                                        </div>
-                                        <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                            <h6 class="text-truncate mb-3">' . $row1['title'] . '</h6>
-                                            <div class="d-flex justify-content-center">
-                                                <h6>$123.00</h6>
-                                                <h6 class="text-muted ml-2"><del>' . $row1['price'] . '</del></h6>
-                                            </div>
-                                        </div>
-                                        <div class="card-footer d-flex justify-content-between bg-light border">
-                                            <a href="product-detail.php?pid=' . $row1['product_id'] . '" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                            <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                                        </div>
-                                    </div>';
-                        }
-                        echo $cards;
-                    }
-                    ?>
-
-                </div>
-            </div>
-        </div> -->
     </div>
     <!-- Products End -->
 

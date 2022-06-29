@@ -31,10 +31,6 @@ $limitPerPage = 2;
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="style.css" rel="stylesheet">
-
-    <script src="jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js" integrity="sha512-Xky5qcc+hy/TW2ju3EXCFG0J4wgaRIPiW5I1qdqW+tGLCzM+EeNH+1fLO8ElsGAYUKI28vY1GfpNPoLnTXGjgA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
@@ -53,17 +49,46 @@ $limitPerPage = 2;
                 <div class="border-bottom mb-4 pb-4">
                     <h5 class="font-weight-semi-bold mb-4">Price Range</h5>
                     <form>
-                        <div data-role="rangeslider">
-                            <label for="range-1a">Rangeslider:</label>
-                            <input type="range" name="range-1a" id="range-1a" min="0" max="100" value="40">
-                            <label for="range-1b">Rangeslider:</label>
-                            <input type="range" name="range-1b" id="range-1b" min="0" max="100" value="80">
+
+                        <?php
+                        include('./action/calculateRange.php');
+
+                        $sql = "SELECT min(price) as minprice, max(price) as maxprice FROM product WHERE category_id = ?";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->bind_param("i", $categoryID);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        if ($result->num_rows > 0) {
+                            $row = $result->fetch_assoc();
+                            $max = $row['maxprice'];
+                            $min = $row['minprice'];
+
+                            $arr = calculateRange($min, $max);
+
+                            for ($i = 0; $i < 4; $i++) {
+                                $minValue = $arr[$i];
+                                $maxValue = $arr[$i + 1];
+                        ?>
+                                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                                    <input type="checkbox" class="custom-control-input" id="price-<?php echo $i + 1; ?>" onclick="fetchData(<?php echo $minValue; ?>, <?php echo $maxValue; ?>)">
+
+                                    <label class="custom-control-label" for="price-<?php echo $i + 1; ?>">&#x20b9;<?php echo $minValue; ?> - &#x20b9;<?php echo $maxValue; ?></label>
+                                    <span class="badge border font-weight-normal">150</span>
+                                </div>
+                        <?php
+                            }
+                        }
+                        ?>
+
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="checkbox" class="custom-control-input" id="price-above">
+                            <label class="custom-control-label" for="price-1">&#x20b9;<?php echo $arr[4]; ?> and above</label>
+                            <span class="badge border font-weight-normal">150</span>
                         </div>
+
                     </form>
                 </div>
                 <!-- Price End -->
-
-                <div id="price_range"></div>
 
                 <!-- Brand filter Start -->
                 <div class="border-bottom mb-4 pb-4">
