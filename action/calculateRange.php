@@ -4,7 +4,8 @@ function calculateRange($min, $max)
 $arr = array_fill(0, 5, 0);
 
 $arr[0] = floor($min - ($min % 10));
-$arr[4] = floor($max - ($max % 10));
+// $arr[4] = floor($max - ($max % 10));
+$arr[4] = floor($max - ($max % 10)) + 10;
 
 $min -= $min % 10;
 $max -= $max % 10;
