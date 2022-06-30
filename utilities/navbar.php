@@ -1,7 +1,3 @@
-<?php
-session_start();
-?>
-
 <div class="container-fluid">
     <div class="row align-items-center px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
@@ -25,9 +21,20 @@ session_start();
         if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') {
         ?>
             <div class="col-lg-3 col-6 text-right">
-                <a href="" class="btn border">
+                <a href="/e-shop/cart.php" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge">0</span>
+                    <span class="badge">
+                        <?php
+
+                        $sql = "SELECT * from `cart` WHERE user_id=?";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->bind_param("i", $_SESSION['user_id']);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        echo $result->num_rows;
+
+                        ?>
+                    </span>
                 </a>
             </div>
 
@@ -86,20 +93,20 @@ session_start();
                             </div>
                         </div>
                         <a href="contact.html" class="nav-item nav-link">Contact</a>
+                        <?php if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') {
+                            echo '<a href="order-history.html" class="nav-item nav-link">Order history</a>';
+                        } ?>
                     </div>
-                    <?php
-                    if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') {
-                        echo '<div class="navbar-nav ml-auto py-0">
-                                <a href="./action/logout.php" class="nav-item nav-link">Logout</a>
-                            </div>';
-                    } else {
-                        echo '<div class="navbar-nav ml-auto py-0">
-                                <a href="login.php" class="nav-item nav-link">Login</a>
-                                <a href="login.php" class="nav-item nav-link">Register</a>
-                            </div>';
-                    }
-                    ?>
-
+                    <?php if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') { ?>
+                        <div class="navbar-nav ml-auto py-0">
+                            <a href="./action/logout.php" class="nav-item nav-link">Logout</a>
+                        </div>
+                    <?php } else { ?>
+                        <div class="navbar-nav ml-auto py-0">
+                            <a href="login.php" class="nav-item nav-link">Login</a>
+                            <a href="login.php" class="nav-item nav-link">Register</a>
+                        </div>
+                    <?php } ?>
                 </div>
             </nav>
         </div>
