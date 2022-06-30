@@ -19,18 +19,24 @@ require('./action/login.php');
 </head>
 
 <body>
-    <!-- alert -->
-    <?php
-    if ($error) {
-        echo "<div class='alert alert-danger alert-dismissible fade show w-50 text-center' role='alert'>
-        $error
-        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
-    } else if ($success) {
-        echo "<div class='alert alert-success alert-dismissible fade show w-50 text-center' role='alert'>
-        $success
-        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
-    }
-    ?>
+    <!-- Alert start-->
+    <?php if ($error) { ?>
+        <center>
+            <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                <?php echo $error; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </center>
+    <?php } else if ($success) { ?>
+        <center>
+            <div class='alert alert-success alert-dismissible fade show' role='alert'>
+                <?php echo $success; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </center>
+    <?php } ?>
+    <!-- Alert end-->
+
     <div class="container" id="container">
 
         <div class="form-container sign-up-container">

@@ -1,5 +1,7 @@
 <?php
 require('./configuration/config.php');
+require('./action/auth.php');
+require('./action/add-cart.php');
 ?>
 
 <!DOCTYPE html>
@@ -22,20 +24,26 @@ require('./configuration/config.php');
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
-    <!-- Libraries Stylesheet -->
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
     <!-- Customized Bootstrap Stylesheet -->
     <link href="style.css" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
 </head>
 
 <body>
-    <!-- Topbar Start -->
+    <!-- Error-Success message Start -->
+    <?php include('utilities/error-success.php') ?>
+    <!-- Error-Success message End -->
 
-    <!-- Topbar End -->
 
-
+    <!-- navbar start -->
     <?php include('./utilities/navbar.php'); ?>
+    <!-- navbar end -->
 
     <!-- Carousel Start -->
     <div id="header-carousel" class="carousel slide my-3" data-ride="carousel">
@@ -121,7 +129,7 @@ require('./configuration/config.php');
         </div>
         <div class="row px-xl-5 pb-3">
             <?php
-            $sql = "SELECT * FROM category LIMIT 6";
+            $sql = "SELECT category_name FROM category LIMIT 6";
             $stmt = $conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -150,7 +158,11 @@ require('./configuration/config.php');
                         echo '<div class="col-lg-4 col-md-6 pb-1">
                             <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
                                 <p class="text-right">' . $countProduct . ' Products</p>
+<<<<<<< HEAD
                                 <a href="products.php?cid=' . $row['category_id'] . '&page_no=1" class="cat-img position-relative overflow-hidden mb-3">
+=======
+                                <a href="" class="cat-img position-relative overflow-hidden mb-3">
+>>>>>>> 8b35b621634a2fd7279e75873f4534c1c470dccf
                                     <img class="img-fluid" src="./' . $image . '" alt="" style="width:100%; height:250px;">
                                 </a>
                                 <h5 class="font-weight-semi-bold m-0">' . $category . '</h5>
@@ -206,11 +218,10 @@ require('./configuration/config.php');
             $stmt->execute();
             $result = $stmt->get_result();
             if ($result->num_rows > 0) {
-                $cards = "";
                 while ($row = $result->fetch_assoc()) {
                     $images = explode(',', $row['image']);
 
-                    $cards .= '<div class="col-lg-3 col-md-6 col-sm-12 pb-4" style="height:450px;">
+                    echo '<div class="col-lg-3 col-md-6 col-sm-12 pb-4" style="height:450px;">
                                     <div class="card product-item border-0 mb-4">
                                         <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0 d-flex align-items-center" style="height:250px;">
                                             <img class="img-fluid w-100" style="object-fit: contain; background: rgba(245, 245, 245, 0.5); height:250px;" src="./' . $images[0] . '" alt="">
@@ -222,15 +233,23 @@ require('./configuration/config.php');
                                                 <small class="text-muted ml-2"><del>&#x20b9 ' . $row['price'] . '</del></small>
                                             </div>
                                         </div>
-                                        <div class="card-footer d-flex justify-content-between bg-light border">
-                                            <a href="product-detail.php?pid=' . $row['product_id'] . '" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
-                                                Detail</a>
-                                            <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                                        </div>
-                                    </div>
-                                </div>';
+                                        <div class="card-footer d-flex justify-content-between bg-light border">';
+
+                    if (isset($_SESSION['user_id'])) {
+                        echo '<a href="product-detail.php?pid=' . $row['product_id'] . '" class="btn btn-sm text-dark p-0">
+                            <i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+                            <form method="post">
+                                <input type="number" value=' . $row['product_id'] . ' name="p_id" hidden/>
+                                <input type="number" value=1 name="p_quantity" hidden/>
+                                <button type="submit" name="add_cart" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</button>
+                            </form>';
+                    } else {
+                        echo '<a href="product-detail.php?pid=' . $row['product_id'] . '" class="btn btn-sm text-dark p-0 w-100">
+                            <i class="fas fa-eye text-primary mr-1"></i>View Detail</a>';
+                    }
+
+                    echo '</div></div></div>';
                 }
-                echo $cards;
             }
             ?>
 
@@ -305,7 +324,7 @@ require('./configuration/config.php');
             <!-- <div class="col-md-6 px-xl-0"> -->
             <p class="text-center text-dark">
                 &copy; <a class="text-dark font-weight-semi-bold" href="#">e-shop</a>. All Rights Reserved. Designed by
-                <a class="text-dark font-weight-semi-bold" href="https://htmlcodex.com">HTML Codex</a>
+                <a class="text-dark font-weight-semi-bold" href="#">VGEC student</a>
             </p>
         </div>
     </div>
@@ -319,15 +338,6 @@ require('./configuration/config.php');
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
-    <!-- Contact Javascript File -->
-    <script src="mail/jqBootstrapValidation.min.js"></script>
-    <script src="mail/contact.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
 </body>
 
 </html>
