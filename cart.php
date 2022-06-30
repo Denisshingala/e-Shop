@@ -78,27 +78,77 @@ include('./action/auth.php');
                         $result = $stmt->get_result();
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
+                                $id = $row['product_id'];
                                 $price = $row['price'] - ($row['price'] * $row['discount']) / 100;
                         ?>
-                                <tr>
-                                    <td class="align-middle"><img src="img/product-1.jpg" alt="" style="width: 50px;"><?php echo $row['title'] ?></td>
+                                <tr id="tr-<?php echo $id ?>">
+                                    <td class="align-middle"><?php echo $row['title'] ?></td>
                                     <td class="align-middle"><?php echo $price ?></td>
-                                    <td class="align-middle">
-                                        <div class="input-group quantity mx-auto" style="width: 100px;">
+                                    <td class="align-middle" id="add-remove-<?php echo $id ?>">
+                                        <div class="input-group quantity m-auto" style="width: 120px;">
                                             <div class="input-group-btn">
-                                                <button class="btn btn-sm btn-primary btn-minus">
+                                                <button type="button" class="btn btn-primary btn-minus" onclick="decQuantity(<?php echo $id ?>)">
                                                     <i class="fa fa-minus"></i>
                                                 </button>
                                             </div>
-                                            <input type="text" class="form-control form-control-sm bg-secondary text-center" value="1">
+                                            <input type="text" class="form-control bg-secondary text-center h-100" value="<?php echo $row['quantity'] ?>" id="quantity-<?php echo $id ?>" name="p_quantity" min="1" required>
                                             <div class="input-group-btn">
-                                                <button class="btn btn-sm btn-primary btn-plus">
+                                                <button type="button" class="btn btn-primary btn-plus" onclick="incQuantity(<?php echo $id ?>)">
                                                     <i class="fa fa-plus"></i>
                                                 </button>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="align-middle"><?php echo $price * $row['quantity'] ?></td>
+
+                                    <?php
+                                    $sql1 = "SELECT size_available,colour_available FROM `product` WHERE product_id=?";
+                                    $stmt1 = $conn->prepare($sql1);
+                                    $stmt1->bind_param("i", $row['product_id']);
+                                    $stmt1->execute();
+                                    $res = $stmt1->get_result();
+                                    $row1 = $res->fetch_assoc();
+                                    echo '<td class="align-middle">';
+                                    if ($row1['size_available'] == NULL) {
+                                        echo '<select disabled>
+                                                    <option value="" selected disabled>- Select -</option>
+                                                </select>';
+                                    } else {
+                                        $sizes = explode(',', $row1['size_available']);
+                                        echo '<select name="size" id="size-' . $id . '" class="w-100" required onchange="setSize(' . $id . ')">';
+                                        if ($row['size'] == NULL)
+                                            echo '<option value="" selected disabled>- Select -</option>';
+                                        foreach ($sizes as $size) {
+                                            if ($row['size'] == $size)
+                                                echo '<option class="text-center" value="' . $size . '" selected>' . $size . '</option>';
+                                            else
+                                                echo '<option class="text-center" value="' . $size . '">' . $size . '</option>';
+                                        }
+                                        echo '</select>';
+                                    }
+                                    echo '</td>';
+                                    echo '<td class="align-middle">';
+                                    if ($row1['colour_available'] == NULL) {
+                                        echo '<select disabled>
+                                                    <option value="" selected disabled>- Select -</option>
+                                                </select>';
+                                    } else {
+                                        $colours = explode(',', $row1['colour_available']);
+                                        echo '<select name="colour" id="colour-' . $id . '" class="w-100" required onchange="setColour(' . $id . ')">';
+                                        if ($row['colour'] == NULL)
+                                            echo '<option value="" selected disabled>- Select -</option>';
+                                        foreach ($colours as $colour) {
+                                            if ($row['colour'] == $colour)
+                                                echo '<option class="text-center" value="' . $colour . '" selected>' . $colour . '</option>';
+                                            else
+                                                echo '<option class="text-center" value="' . $colour . '">' . $colour . '</option>';
+                                        }
+
+                                        echo '</select>';
+                                    }
+                                    echo '</td>';
+                                    $stmt1->close();
+                                    ?>
                                     <td class="align-middle"><button class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
                                 </tr>
                         <?php
@@ -223,7 +273,70 @@ include('./action/auth.php');
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
+    <!-- JavaScript start -->
+    <script>
+        const incQuantity = (id) => {
+            let quantity_value = document.getElementById('quantity-' + id).value;
+            $.ajax({
+                url: "./action/cart-action.php",
+                method: "POST",
+                data: {
+                    add_item_id: id,
+                    item_quantity: quantity_value
+                },
+                success: (content) => {
+                    $("#add-remove-" + id).html(content);
+                }
+            })
+        }
+        const decQuantity = (id) => {
+            let quantity_value = document.getElementById('quantity-' + id).value;
+            if (quantity_value > 1) {
+                $.ajax({
+                    url: "./action/cart-action.php",
+                    method: "POST",
+                    data: {
+                        remove_item_id: id,
+                        item_quantity: quantity_value
+                    },
+                    success: (content) => {
+                        $("#add-remove-" + id).html(content);
+                    }
+                })
+            }
+        }
+        const setColour = (id) => {
+            let colour = document.getElementById('colour-' + id).value;
+            $.ajax({
+                url: "./action/cart-action.php",
+                method: "POST",
+                data: {
+                    item_id: id,
+                    colour: colour
+                }
+            })
+        }
 
+        const setSize = (id) => {
+            let size = document.getElementById('size-' + id).value;
+            $.ajax({
+                url: "./action/cart-action.php",
+                method: "POST",
+                data: {
+                    item_id: id,
+                    size: size
+                }
+            })
+        }
+        const verifyItem = (id) => {
+            let quantity = document.getElementById(id);
+            if (quantity.value <= 0) {
+                alert("Error ! Item quantity should be more than 0");
+                return false;
+            }
+        }
+    </script>
+    <!-- JavaScript end -->
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>

@@ -19,8 +19,24 @@ require('./action/login.php');
 </head>
 
 <body>
-    <!-- alert -->
-    <?php include('./utilities/error-success.php'); ?>
+    <!-- Alert start-->
+    <?php if ($error) { ?>
+        <center>
+            <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                <?php echo $error; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </center>
+    <?php } else if ($success) { ?>
+        <center>
+            <div class='alert alert-success alert-dismissible fade show' role='alert'>
+                <?php echo $success; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </center>
+    <?php } ?>
+    <!-- Alert end-->
+
     <div class="container" id="container">
 
         <div class="form-container sign-up-container">
