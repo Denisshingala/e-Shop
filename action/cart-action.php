@@ -55,6 +55,6 @@ if (isset($_POST['colour'])) {
 if (isset($_POST['size'])) {
     $sql = "UPDATE `cart` SET `size`=? WHERE `product_id`=?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ii", $_POST['size'], $_POST['item_id']);
+    $stmt->bind_param("si", $_POST['size'], $_POST['item_id']);
     $stmt->execute();
 }

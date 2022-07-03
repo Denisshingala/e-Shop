@@ -21,12 +21,12 @@ if (isset($_POST['add_cart'])) {
             $size = mysqli_real_escape_string($conn, $_POST['p_size']);
         else
             $size = NULL;
-            
+
         $user_id = $_SESSION['user_id'];
 
         $sql = "INSERT INTO `cart` (`user_id`,`product_id`,`quantity`,`size`,`colour`) VALUES(?,?,?,?,?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iiiis", $user_id, $id, $quantity, $size, $colour);
+        $stmt->bind_param("iiiss", $user_id, $id, $quantity, $size, $colour);
         if ($stmt->execute()) {
             $success = "Added in your cart";
         }
@@ -34,4 +34,17 @@ if (isset($_POST['add_cart'])) {
     } else {
         $error = "Item already exists in cart...";
     }
+}
+
+if (isset($_POST['remove'])) {
+    $temp_id = mysqli_real_escape_string($conn, $_POST['p_id']);
+    $temp_sql = "DELETE FROM `cart` WHERE product_id=?";
+    $temp_stmt = $conn->prepare($temp_sql);
+    $temp_stmt->bind_param("i", $temp_id);
+    if ($temp_stmt->execute()) {
+        $success = "Item has been remove form cart...";
+    } else {
+        $error = "Somthing went wrong...";
+    }
+    $temp_stmt->close();
 }
