@@ -1,7 +1,7 @@
 <?php
 $sellerID = $_SESSION['seller_id'];
 
-if(isset($_POST['add-product-btn'])) {
+if (isset($_POST['add-product-btn'])) {
     $title = mysqli_real_escape_string($conn, $_POST['title']);
     $description = mysqli_real_escape_string($conn, $_POST['description']);
     $brand = mysqli_real_escape_string($conn, $_POST['brand']);
@@ -11,9 +11,9 @@ if(isset($_POST['add-product-btn'])) {
     $size = mysqli_real_escape_string($conn, $_POST['size']);
     $colour = mysqli_real_escape_string($conn, $_POST['colour']);
 
-    if($size == '') 
+    if ($size === '')
         $size = NULL;
-    if($colour == '') 
+    if ($colour === '')
         $colour = NULL;
 
     $images = $_FILES['product-images'];
@@ -22,7 +22,6 @@ if(isset($_POST['add-product-btn'])) {
     $count = count($filename);
     $array = array();
 
-    echo "<br>";
     for ($i = 0; $i < $count; $i++) {
         $imageName = time() . "_" . $filename[$i];
         $path = dirname(dirname(__DIR__)) . "\upload\\" . $imageName;
@@ -41,5 +40,3 @@ if(isset($_POST['add-product-btn'])) {
         $error = "Unable to add product due to technical issue";
     }
 }
-
-?>

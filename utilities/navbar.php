@@ -103,8 +103,7 @@
                         </div>
                     <?php } else { ?>
                         <div class="navbar-nav ml-auto py-0">
-                            <a href="login.php" class="nav-item nav-link">Login</a>
-                            <a href="login.php" class="nav-item nav-link">Register</a>
+                            <a href="login.php" class="nav-item nav-link">Login/Register</a>
                         </div>
                     <?php } ?>
                 </div>

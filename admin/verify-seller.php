@@ -22,7 +22,7 @@ require('./action/seller-approve.php');
 
     <main class="d-flex">
         <?php include('utilities/side-navbar.php') ?>
-        <div class="p-4">
+        <div class="p-4 main-body">
             <?php include('utilities/alert.php'); ?>
             <table class="table table-bordered table-responsive table-striped">
                 <thead class="text-center">

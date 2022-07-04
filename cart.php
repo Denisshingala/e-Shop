@@ -1,6 +1,7 @@
 <?php
 include('./configuration/config.php');
 include('./action/auth.php');
+include('./action/add-cart.php');
 
 ?>
 
@@ -56,6 +57,8 @@ include('./action/auth.php');
     <!-- Cart Start -->
     <div class="container-fluid pt-5">
         <div class="row px-xl-5">
+
+            <!-- Cart table end  -->
             <div class="col-lg-8 table-responsive mb-5">
                 <table class="table table-bordered text-center mb-0">
                     <thead class="bg-secondary text-dark">
@@ -71,6 +74,7 @@ include('./action/auth.php');
                     </thead>
                     <tbody class="align-middle">
                         <?php
+                        $total_cart_cost = 0;
                         $sql = "SELECT * FROM `cart` as c JOIN `product` as p ON p.product_id=c.product_id WHERE c.user_id=?";
                         $stmt = $conn->prepare($sql);
                         $stmt->bind_param("i", $_SESSION['user_id']);
@@ -80,10 +84,19 @@ include('./action/auth.php');
                             while ($row = $result->fetch_assoc()) {
                                 $id = $row['product_id'];
                                 $price = $row['price'] - ($row['price'] * $row['discount']) / 100;
+                                $total_cart_cost += $price * $row['quantity'];
                         ?>
                                 <tr id="tr-<?php echo $id ?>">
+
+                                    <!-- Title  -->
                                     <td class="align-middle"><?php echo $row['title'] ?></td>
-                                    <td class="align-middle"><?php echo $price ?></td>
+
+                                    <!-- Price  -->
+                                    <td class="align-middle">
+                                        &#8377;<span id="price-<?php echo $id ?>"><?php echo $price ?></span>
+                                    </td>
+
+                                    <!-- Item quantity  -->
                                     <td class="align-middle" id="add-remove-<?php echo $id ?>">
                                         <div class="input-group quantity m-auto" style="width: 120px;">
                                             <div class="input-group-btn">
@@ -91,7 +104,7 @@ include('./action/auth.php');
                                                     <i class="fa fa-minus"></i>
                                                 </button>
                                             </div>
-                                            <input type="text" class="form-control bg-secondary text-center h-100" value="<?php echo $row['quantity'] ?>" id="quantity-<?php echo $id ?>" name="p_quantity" min="1" required>
+                                            <input type="text" class="form-control bg-secondary text-center h-100" onchange="check(<?php echo $id ?>)" value="<?php echo $row['quantity'] ?>" id="quantity-<?php echo $id ?>" name="p_quantity" min="1" required>
                                             <div class="input-group-btn">
                                                 <button type="button" class="btn btn-primary btn-plus" onclick="incQuantity(<?php echo $id ?>)">
                                                     <i class="fa fa-plus"></i>
@@ -99,8 +112,13 @@ include('./action/auth.php');
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="align-middle"><?php echo $price * $row['quantity'] ?></td>
 
+                                    <!-- Total Cost  -->
+                                    <td class="align-middle">
+                                        &#8377;<span id="cost-<?php echo $id ?>"><?php echo $price * $row['quantity'] ?></span>
+                                    </td>
+
+                                    <!-- Size select-bar start -->
                                     <?php
                                     $sql1 = "SELECT size_available,colour_available FROM `product` WHERE product_id=?";
                                     $stmt1 = $conn->prepare($sql1);
@@ -126,7 +144,11 @@ include('./action/auth.php');
                                         }
                                         echo '</select>';
                                     }
-                                    echo '</td>';
+                                    echo '</td>'; ?>
+                                    <!-- Size select-bar end  -->
+
+                                    <!-- Colour select-bar start  -->
+                                    <?php
                                     echo '<td class="align-middle">';
                                     if ($row1['colour_available'] == NULL) {
                                         echo '<select disabled>
@@ -149,7 +171,15 @@ include('./action/auth.php');
                                     echo '</td>';
                                     $stmt1->close();
                                     ?>
-                                    <td class="align-middle"><button class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
+                                    <!-- Colour select-bar end  -->
+
+                                    <!-- Romove item  -->
+                                    <td class="align-middle">
+                                        <form method="POST" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+                                            <input type="number" value="<?php echo $id ?>" name="p_id" hidden>
+                                            <button type="submit" name="remove" class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button>
+                                        </form>
+                                    </td>
                                 </tr>
                         <?php
                             }
@@ -161,38 +191,27 @@ include('./action/auth.php');
                     </tbody>
                 </table>
             </div>
+            <!-- Cart table end  -->
+
+            <!-- Cart cost start  -->
             <div class="col-lg-4">
-                <form class="mb-5" action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control p-4" placeholder="Coupon Code">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary">Apply Coupon</button>
-                        </div>
-                    </div>
-                </form>
                 <div class="card border-secondary mb-5">
                     <div class="card-header bg-secondary border-0">
                         <h4 class="font-weight-semi-bold m-0">Cart Summary</h4>
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3 pt-1">
-                            <h6 class="font-weight-medium">Subtotal</h6>
-                            <h6 class="font-weight-medium">$150</h6>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <h6 class="font-weight-medium">Shipping</h6>
-                            <h6 class="font-weight-medium">$10</h6>
+                            <h6 class="font-weight-medium">Total</h6>
+                            <h6 class="font-weight-medium">&#8377;<span id="total-cart-cost"><?php echo $total_cart_cost ?></span></h6>
                         </div>
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
-                        <div class="d-flex justify-content-between mt-2">
-                            <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold">$160</h5>
-                        </div>
                         <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
                     </div>
                 </div>
             </div>
+            <!-- Cart cost end  -->
+
         </div>
     </div>
     <!-- Cart End -->
@@ -269,42 +288,67 @@ include('./action/auth.php');
     </div>
     <!-- Footer End -->
 
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
-
     <!-- JavaScript start -->
     <script>
+        const totalCartCost = document.getElementById('total-cart-cost');
+
+        const check = (id) => {
+            let value = document.getElementById('quantity-' + id).value;
+            if (value <= 0) {
+                alert('Item should be more than 0!');
+            }
+        }
+
         const incQuantity = (id) => {
             let quantity_value = document.getElementById('quantity-' + id).value;
-            $.ajax({
-                url: "./action/cart-action.php",
-                method: "POST",
-                data: {
-                    add_item_id: id,
-                    item_quantity: quantity_value
-                },
-                success: (content) => {
-                    $("#add-remove-" + id).html(content);
-                }
-            })
-        }
-        const decQuantity = (id) => {
-            let quantity_value = document.getElementById('quantity-' + id).value;
-            if (quantity_value > 1) {
+            if (quantity_value > 0) {
+                let price_value = document.getElementById('price-' + id).innerHTML;
                 $.ajax({
                     url: "./action/cart-action.php",
                     method: "POST",
                     data: {
-                        remove_item_id: id,
+                        add_item_id: id,
                         item_quantity: quantity_value
                     },
                     success: (content) => {
+                        let cost = eval(++quantity_value * price_value);
                         $("#add-remove-" + id).html(content);
+                        $("#cost-" + id).html(cost.toFixed(2));
+                        cost = (eval(totalCartCost.innerHTML) + eval(price_value)).toFixed(2);
+                        $("#total-cart-cost").html(cost);
                     }
                 })
+            } else {
+                alert('Item quantity should be more than 0!');
             }
         }
+
+        const decQuantity = (id) => {
+            let quantity_value = document.getElementById('quantity-' + id).value;
+            if (quantity_value > 0) {
+                let price_value = document.getElementById('price-' + id).innerHTML;
+                if (quantity_value > 1) {
+                    $.ajax({
+                        url: "./action/cart-action.php",
+                        method: "POST",
+                        data: {
+                            remove_item_id: id,
+                            item_quantity: quantity_value
+                        },
+                        success: (content) => {
+                            let cost = eval(--quantity_value * price_value);
+                            $("#add-remove-" + id).html(content);
+                            $("#cost-" + id).html(cost.toFixed(2));
+                            cost = (eval(totalCartCost.innerHTML) - eval(price_value)).toFixed(2);
+                            $("#total-cart-cost").html(cost);
+                        }
+                    })
+                }
+            } else {
+                alert('Item quantity should be more than 0!');
+            }
+        }
+
         const setColour = (id) => {
             let colour = document.getElementById('colour-' + id).value;
             $.ajax({
@@ -337,6 +381,7 @@ include('./action/auth.php');
         }
     </script>
     <!-- JavaScript end -->
+
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>

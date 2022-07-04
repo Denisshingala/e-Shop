@@ -29,7 +29,7 @@ require('action/auth.php');
     <main class="d-flex">
         <?php include('utilities/side-navbar.php') ?>
 
-        <div class="p-4">
+        <div class="p-4 main-body">
 
             <form action="./action/add-category.php" method="POST" class="p-2 mb-5">
                 <div class="form-group mb-4">
@@ -40,7 +40,7 @@ require('action/auth.php');
             </form>
 
 
-            <table class="table table-bordered text-center table-responsive table-striped">
+            <table class="table table-bordered text-center table-responsive table-striped" style="border: none">
                 <thead>
                     <tr style="background-color: rgb(95, 162, 240);">
                         <th>#</th>
@@ -73,9 +73,6 @@ require('action/auth.php');
         </div>
 
     </main>
-
-    <script src="/docs/5.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
 </body>
 
 </html>

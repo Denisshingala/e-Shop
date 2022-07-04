@@ -89,13 +89,6 @@ if (isset($_POST['submit1'])) {
             <input type="text" name="email" class="form-control w-100 fw-light" id="" placeholder="Enter your email" />
             <input type="submit" name="submit1" class="btn btn-danger w-100 my-3" />
         </form>
-        <!-- <form class="p-4 d-none" id="form2" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" onsubmit="return passwordverify()">
-            <input type="text" name="type" value="<?php echo $type ?>" hidden>
-            <input type="text" name="email" value="<?php echo $email ?>" hidden>
-            <input type="password" name="password" id="pass" class="form-control w-100 fw-light" placeholder="Enter your password" /> <br />
-            <input type="text" id="repass" class="form-control w-100 fw-light" placeholder="Confirm password" />
-            <input type="submit" name="submit2" class="btn btn-danger w-100 my-3" />
-        </form> -->
     </div>
 </body>
 

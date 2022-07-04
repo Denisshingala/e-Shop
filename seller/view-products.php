@@ -71,10 +71,10 @@ require('action/update-product.php');
 
     <main class="d-flex">
         <?php include('utilities/side-navbar.php'); ?>
-        <div class="p-2 w-100">
+        <div class="main-body" class="p-2 w-100">
             <?php include('utilities/error-success.php') ?>
 
-            <div class="d-flex flex-wrap">
+            <div class="d-flex flex-wrap justify-content-center">
 
                 <!-- product card -->
                 <?php
@@ -129,92 +129,6 @@ require('action/update-product.php');
                                     <h6 class="product-desc pb-2"><?php echo $row['title'] ?></h6>
                                     <p><span class="newprize h4">&#8377;<?php echo $sellingPrice ?></span> <span class="oldprize">&#8377;<?php echo $row['price'] ?></span> (<?php echo $row['discount'] ?>% off)</p>
                                 </div>
-
-                                <!-- Model form  -->
-                                <button type="button" class="card-btn btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop<?php echo $row['product_id'] ?>">
-                                    Edit
-                                </button>
-
-                                <!-- Modal -->
-                                <div class="modal fade text-left" id="staticBackdrop<?php echo $row['product_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="staticBackdropLabel">Update product details</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
-                                                <div class="modal-body bg-light">
-                                                    <input type="text" name="id" value="<?php echo $row['product_id'] ?>" hidden />
-                                                    <div class="form-group mb-4">
-                                                        <label for="title">Product Title</label>
-                                                        <input type="text" class="form-control" name="title" id="title" value="<?php echo $row['title'] ?> " required>
-                                                    </div>
-
-                                                    <div class="form-group mb-4">
-                                                        <label for="description">Product Description</label>
-                                                        <br><textarea name="description" id="description" cols="135" rows="4" class="form-control" style="resize: none;"><?php echo $row['description'] ?></textarea>
-                                                    </div>
-
-                                                    <div class="form-row d-flex justify-content-around mb-4">
-                                                        <div class="form-group col-3">
-                                                            <label for="brand">Brand Name</label>
-                                                            <input type="text" class="form-control" name="brand" id="brand" value="<?php echo $row['brand'] ?> ">
-                                                        </div>
-                                                        <div class="form-group col-3">
-                                                            <label for="category">Category</label>
-                                                            <select id="category" name="category" class="form-control" value="<?php echo $row['category_id'] ?> " required>
-                                                                <option disabled> - Select - </option>
-                                                                <?php
-                                                                $sql1 = "SELECT * FROM category";
-                                                                $stmt1 = $conn->prepare($sql1);
-                                                                $stmt1->execute();
-                                                                $result1 = $stmt1->get_result();
-                                                                if ($result1->num_rows > 0) {
-                                                                    while ($row1 = $result1->fetch_assoc()) {
-                                                                        if ($row1['category_id'] == $row['category_id'])
-                                                                            echo '<option value="' . $row1['category_id'] . '" selected>' . $row1['category_name'] . '</option>';
-                                                                        else
-                                                                            echo '<option value="' . $row1['category_id'] . '">' . $row1['category_name'] . '</option>';
-                                                                    }
-                                                                }
-                                                                ?>
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group col-3">
-                                                            <label for="price">Price (Rs.)</label>
-                                                            <input type="number" class="form-control" name="price" id="price" value=<?php echo $row['price'] ?> required>
-                                                        </div>
-                                                        <div class="form-group col-3">
-                                                            <label for="price">Discount (%)</label>
-                                                            <input type="number" class="form-control" name="discount" id="discount" value=<?php echo $row['discount'] ?> maxlength="100">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-row d-flex mb-2">
-                                                        <div class="form-group col-md-6 mb-4 mx-1">
-                                                            <label for="size">Sizes available<br>(comma separated, if applicable)</label>
-                                                            <input type="text" class="form-control" name="size" id="size" value="<?php echo $row['size_available'] ?> ">
-                                                        </div>
-                                                        <div class="form-group col-md-6 mb-4 mx-1">
-                                                            <label for="size">Colours available<br>(comma separated, if applicable)</label>
-                                                            <input type="text" class="form-control" name="colour" id="colour" value="<?php echo $row['colour_available'] ?> ">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                    <input type="submit" name="update" class="btn btn-primary" value="Submit">
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" class='d-inline'>
-                                    <?php echo '<input type="text" name="id" value="' . $row['product_id'] . '" hidden/>'; ?>
-                                    <input type="submit" name="delete" class="card-btn btn btn-danger" value="Delete">
-                                </form>
                             </div>
                         </div>
                 <?php
@@ -229,7 +143,5 @@ require('action/update-product.php');
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
 
 </body>
-
-<?php include('./utilities/datatable.php') ?>
 
 </html>

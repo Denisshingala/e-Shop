@@ -23,7 +23,7 @@ require('action/auth.php');
     <main class="d-flex">
         <?php include('utilities/side-navbar.php') ?>
 
-        <div>
+        <div class="main-body">
 
             <div class="container pt-5" style="padding-left:50px;">
                 <div class="row align-items-stretch">
