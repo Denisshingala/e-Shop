@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 include('../configuration/config.php');
 
@@ -25,7 +24,6 @@ if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') {
         $profileImage = $row['profile_image'];
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -36,7 +34,7 @@ if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-shop | User</title>
     <?php include('utilities/header.php'); ?>
-    <link rel="stylesheet" href="css/edit-profile.css">
+    <link rel="stylesheet" href="css/profile.css">
 </head>
 
 <body>

@@ -1,6 +1,6 @@
 <?php
-include('./configuration/config.php');
-include('./action/auth.php');
+include('../configuration/config.php');
+include('../action/auth.php');
 include('./action/add-cart.php');
 
 ?>
@@ -26,15 +26,19 @@ include('./action/add-cart.php');
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
     <!-- Customized Bootstrap 4 Stylesheet -->
-    <link href="style.css" rel="stylesheet">
+    <link href="../style.css" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
 </head>
 
 <body>
     <!-- Error-Success message Start -->
-    <?php include('utilities/error-success.php') ?>
+    <?php include('./utilities/error-success.php') ?>
     <!-- Error-Success message End -->
 
     <!-- navbar start -->

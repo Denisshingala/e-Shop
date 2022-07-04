@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 include('../../configuration/config.php');
 
 if(isset($_POST['update-profile-btn'])) {
@@ -14,10 +14,15 @@ if(isset($_POST['update-profile-btn'])) {
     $pincode = $conn->real_escape_string($_POST['pincode']);
     $country = $conn->real_escape_string($_POST['country']);
 
-    $sql = "UPDATE user WHERE email=? SET name=?, gender=?, ";
+    $sql = "UPDATE user SET name=?, gender=?, dob=?, address=?, city=?, state=?, pincode=?, country=? WHERE email=?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
+    $stmt->bind_param("sssssssss", $name, $gender, $dob, $address, $city, $state, $pincode, $country, $email);
+    if($stmt->execute()) {
+        header("location: ../profile.php");
+    }
+    else {
+        echo "not updated";
+    }
 }
 
 ?>

@@ -1,9 +1,9 @@
 <?php
-include('./configuration/config.php');
-include('./action/auth.php');
+include('../configuration/config.php');
+include('../action/auth.php');
 
 if (!isset($_GET['pid'])) {
-    header("location:/e-shop");
+    header("location: ../index.php");
 } else {
     $productID = $_GET['pid'];
     $sql = "SELECT * FROM `product` WHERE product_id=?";
@@ -41,7 +41,7 @@ require('./action/add-cart.php');
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
     <!-- Customized Bootstrap 4 Stylesheet -->
-    <link href="style.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script>
@@ -94,12 +94,12 @@ require('./action/add-cart.php');
                             foreach ($images as $image) {
                                 if ($count == 0) {
                                     echo '<div class="carousel-item active">
-                                    <img class="w-100" src="' . $image . '" alt="Image" style="object-fit:contain; height:500px;">
+                                    <img class="w-100" src="../' . $image . '" alt="Image" style="object-fit:contain; height:500px;">
                                     </div>';
                                     $count++;
                                 } else {
                                     echo '<div class="carousel-item">
-                                    <img class="w-100" src="' . $image . '" alt="Image" style="object-fit:contain; height:500px;">
+                                    <img class="w-100" src="../' . $image . '" alt="Image" style="object-fit:contain; height:500px;">
                                     </div>';
                                 }
                             }
@@ -136,10 +136,10 @@ require('./action/add-cart.php');
                 <p class="my-5" style="line-height:20px;"><?php echo $description; ?></p>
 
                 <form method="POST" action="<?php echo $_SERVER['REQUEST_URI'] ?>" onsubmit="return verifyItem()">
+                    <input type="number" name="p_id" value=<?php echo $productID; ?> hidden />
                     <?php
                     if ($sizeAvailable) {
                         $sizes = explode(',', $sizeAvailable); ?>
-                        <input type="number" name="p_id" value=<?php echo $productID; ?> hidden />
                         <div class="d-flex mb-3">
                             <p class="text-dark font-weight-medium mb-0 mr-3 mt-1">Sizes:</p>
                             <div class="d-flex flex-row">

@@ -1,6 +1,6 @@
 <?php
 
-require('../configuration/config.php');
+require('../../configuration/config.php');
 if (isset($_POST['add_item_id'])) {
     $quantity = $_POST['item_quantity'] + 1;
     $sql = "UPDATE `cart` SET `quantity`=? WHERE `product_id`=?";

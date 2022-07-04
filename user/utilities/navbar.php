@@ -1,8 +1,17 @@
+<?php
+$filename = basename($_SERVER['REQUEST_URI']);
+?>
+
 <div class="container-fluid">
     <div class="row align-items-center px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
             <a href="index.php" class="text-decoration-none">
-                <img src="./images/logo.png" alt="e-Shop" width="140" height="130">
+                <?php 
+                if($filename == 'index.php' || $filename == 'e-shop')
+                    echo '<img src="./images/logo.png" alt="e-Shop" width="140" height="130">';
+                else 
+                    echo '<img src="../images/logo.png" alt="e-Shop" width="140" height="130">';
+                ?>
             </a>
         </div>
         <div class="col-lg-6 col-6 text-left">
@@ -92,14 +101,26 @@
                                 <a href="checkout.html" class="dropdown-item">Checkout</a>
                             </div>
                         </div>
-                        <a href="contact.html" class="nav-item nav-link">Contact</a>
+                        <?php
+                        if($filename == 'index.php')
+                            echo '<a href="user/contact-us.php" class="nav-item nav-link">Contact</a>';
+                        else
+                            echo '<a href="contact-us.php" class="nav-item nav-link">Contact</a>';
+                        ?>
+                        
                         <?php if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') {
                             echo '<a href="order-history.html" class="nav-item nav-link">Order history</a>';
                         } ?>
                     </div>
                     <?php if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') { ?>
                         <div class="navbar-nav ml-auto py-0">
-                            <a href="./action/logout.php" class="nav-item nav-link">Logout</a>
+                            <?php
+                            if($filename == 'index.php')
+                                echo '<a href="./action/logout.php" class="nav-item nav-link">Logout</a>';
+                            else
+                                echo '<a href="../action/logout.php" class="nav-item nav-link">Logout</a>';
+                            ?>
+                            
                         </div>
                     <?php } else { ?>
                         <div class="navbar-nav ml-auto py-0">

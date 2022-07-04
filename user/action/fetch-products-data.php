@@ -1,5 +1,7 @@
 <?php
-include('../configuration/config.php');
+include('../../configuration/config.php');
+include('../../action/auth.php');
+
 
 if (isset($_POST['action'])) {
     $limitPerPage = 2;
@@ -47,7 +49,7 @@ if (isset($_POST['action'])) {
             $cards .= '<div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                                     <div class="card product-item border-0 mb-4">
                                         <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0" style="height:250px;">
-                                            <img class="img-fluid w-100" src="./' . $images[0] . '" style="object-fit:contain; height:250px;" alt="Product">
+                                            <img class="img-fluid w-100" src="../' . $images[0] . '" style="object-fit:contain; height:250px;" alt="Product">
                                         </div>
                                         <div class="card-body border-left border-right text-center p-0 pt-4 pb-3 px-3">
                                             <h6 class="text-truncate mb-3">' . $row['title'] . '</h6>
@@ -56,14 +58,39 @@ if (isset($_POST['action'])) {
                                                 <h6 class="text-muted ml-2"><del>&#x20b9 ' . $row['price'] . '</del></h6>
                                             </div>
                                         </div>
-                                        <div class="card-footer d-flex justify-content-between bg-light border">
-                                            <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                            <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                                        </div>
-                                    </div>
-                                </div>';
+                                        <div class="card-footer d-flex justify-content-between bg-light border">';
+                                            ?>
+                                            <?php
+                                            if (isset($_SESSION['user_id'])) {
+                                                $cards .=
+                                                '<a href="product-detail.php?pid=' . $row['product_id'] . '" class="btn btn-sm text-dark p-0">
+                                                    <i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+                                                    <form method="post">
+                                                        <input type="number" value=' . $row['product_id'] . ' name="p_id" hidden/>
+                                                        <input type="number" value=1 name="p_quantity" hidden/>
+                                                        <button type="submit" name="add_cart" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</button>
+                                                    </form>';
+                                            }
+                                            else {
+                                                $cards .= '<a href="product-detail.php?pid=' . $row['product_id'] . '" class="btn btn-sm text-dark p-0 w-100">
+                            <i class="fas fa-eye text-primary mr-1"></i>View Detail</a>';
+                                            }
+                                    $cards .=  '</div></div></div>';
         }
         $cards .= '</div>';
+
+        // if (isset($_SESSION['user_id'])) {
+        //     echo '<a href="user/product-detail.php?pid=' . $row['product_id'] . '" class="btn btn-sm text-dark p-0">
+        //                     <i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+        //                     <form method="post">
+        //                         <input type="number" value=' . $row['product_id'] . ' name="p_id" hidden/>
+        //                         <input type="number" value=1 name="p_quantity" hidden/>
+        //                         <button type="submit" name="add_cart" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</button>
+        //                     </form>';
+        // } else {
+        //     echo '<a href="user/product-detail.php?pid=' . $row['product_id'] . '" class="btn btn-sm text-dark p-0 w-100">
+        //                     <i class="fas fa-eye text-primary mr-1"></i>View Detail</a>';
+        // }
 
 
         // Pagination
