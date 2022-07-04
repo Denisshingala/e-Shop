@@ -25,7 +25,7 @@ require('./user/action/add-cart.php');
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="style.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script>
@@ -37,12 +37,12 @@ require('./user/action/add-cart.php');
 
 <body>
     <!-- Error-Success message Start -->
-    <?php include('utilities/error-success.php') ?>
+    <?php include('user/utilities/error-success.php') ?>
     <!-- Error-Success message End -->
 
 
     <!-- navbar start -->
-    <?php include('./utilities/navbar.php'); ?>
+    <?php include('user/utilities/navbar.php'); ?>
     <!-- navbar end -->
 
     <!-- Carousel Start -->
@@ -158,8 +158,8 @@ require('./user/action/add-cart.php');
                         echo '<div class="col-lg-4 col-md-6 pb-1">
                             <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
                                 <p class="text-right">' . $countProduct . ' Products</p>
-                                <a href="products.php?cid=' . $row['category_id'] . '&page_no=1" class="cat-img position-relative overflow-hidden mb-3">
-                                    <img class="img-fluid" src="./' . $image . '" alt="" style="width:100%; height:250px;">
+                                <a href="user/products.php?cid=' . $row['category_id'] . '&page_no=1" class="cat-img position-relative overflow-hidden mb-3">
+                                    <img class="img-fluid" src="./' . $image . '" alt="" style="width:100%; height:250px; object-fit:contain;">
                                 </a>
                                 <h5 class="font-weight-semi-bold m-0">' . $category . '</h5>
                             </div>
@@ -232,7 +232,7 @@ require('./user/action/add-cart.php');
                                         <div class="card-footer d-flex justify-content-between bg-light border">';
 
                     if (isset($_SESSION['user_id'])) {
-                        echo '<a href="product-detail.php?pid=' . $row['product_id'] . '" class="btn btn-sm text-dark p-0">
+                        echo '<a href="user/product-detail.php?pid=' . $row['product_id'] . '" class="btn btn-sm text-dark p-0">
                             <i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
                             <form method="post">
                                 <input type="number" value=' . $row['product_id'] . ' name="p_id" hidden/>
@@ -240,7 +240,7 @@ require('./user/action/add-cart.php');
                                 <button type="submit" name="add_cart" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</button>
                             </form>';
                     } else {
-                        echo '<a href="product-detail.php?pid=' . $row['product_id'] . '" class="btn btn-sm text-dark p-0 w-100">
+                        echo '<a href="user/product-detail.php?pid=' . $row['product_id'] . '" class="btn btn-sm text-dark p-0 w-100">
                             <i class="fas fa-eye text-primary mr-1"></i>View Detail</a>';
                     }
 

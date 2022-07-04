@@ -1,6 +1,8 @@
 <!-- This will contain category wise products -->
 <?php
-include('./configuration/config.php');
+include('../configuration/config.php');
+include('../action/auth.php');
+include('./action/add-cart.php');
 $categoryID = $_GET['cid'];
 $pageNo = $_GET['page_no'];
 $limitPerPage = 2;
@@ -30,12 +32,17 @@ $limitPerPage = 2;
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="style.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
-
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
 </head>
 
 <body>
+    <?php include('./utilities/error-success.php'); ?>
     <!-- Navbar Start -->
     <?php include('./utilities/navbar.php'); ?>
     <!-- Navbar End -->
@@ -58,7 +65,7 @@ $limitPerPage = 2;
                     <form>
 
                         <?php
-                        include('./action/calculateRange.php');
+                        include('action/calculateRange.php');
 
                         $sql = "SELECT min(price) as minprice, max(price) as maxprice FROM product WHERE category_id = ?";
                         $stmt = $conn->prepare($sql);
@@ -126,7 +133,7 @@ $limitPerPage = 2;
 
             <!-- Shop Sidebar End -->
 
-            <div class="col-lg-9 col-md-12" id="show-products-category-wise" >
+            <div class="col-lg-9 col-md-12" id="show-products-category-wise">
             </div>
 
 
@@ -214,6 +221,6 @@ $limitPerPage = 2;
 </body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="script.js"></script>
+<script src="js/script.js"></script>
 
 </html>
