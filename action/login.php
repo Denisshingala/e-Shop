@@ -40,9 +40,12 @@ if (isset($_POST['sellersubmit'])) {
     $password = mysqli_real_escape_string($conn, $_POST['password']);
     $newPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    $sql = "SELECT * FROM `seller` WHERE account_number=$accountNumber";
-    $res = mysqli_query($conn, $sql);
-    if (mysqli_num_rows($res) <= 0) {
+    $sql = "SELECT * FROM `seller` WHERE account_number=? OR email=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss", $accountNumber, $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows <= 0) {
 
         $sql = "INSERT INTO `seller`(`company_name`, `email`, `password`, `contact_number`, `gst_number`, `account_number`, `IFSC_code`, `company_address`) VALUES (?,?,?,?,?,?,?,?)";
         $stmt = $conn->prepare($sql);
@@ -56,7 +59,7 @@ if (isset($_POST['sellersubmit'])) {
             $error = "Oops! Something went wrong...";
         }
     } else {
-        $error = "Oops! Account number already registered...";
+        $error = "Oops! Account already registered...";
     }
 }
 
@@ -77,45 +80,47 @@ if (isset($_POST['login'])) {
 
         if (isset($row['email'])) {
 
+            // Passoword verification
             if (password_verify($password, $row['password'])) {
 
-                // echo "<script>alert('You are logged in...')</script>";
+                // Check whether account is block or not
+                if ($row['status'] !== 'block') {
 
-                $_SESSION['type'] = $type;
-                // TODO : PUT ALL IN ELSE IF
-                if ($type === "seller") {
+                    // Set session
+                    $_SESSION['type'] = $type;
 
-                    if ($row['status'] !== 'pending') {
-                        $_SESSION['email'] = $row['email'];
-                        $_SESSION['seller_id'] = $row['seller_id'];
-                        $success = "Congratulation! You are logged in...";
-                        header("location: ./seller/dashboard.php");
+                    if ($type === "seller") {
+
+                        if ($row['status'] !== 'pending') {
+                            $_SESSION['email'] = $row['email'];
+                            $_SESSION['seller_id'] = $row['seller_id'];
+                            $success = "Congratulation! You are logged in!";
+                            header("location: ./seller/dashboard.php");
+                        } else {
+                            $success = "Oops! Your approval is on pending!";
+                        }
                     } else {
-                        $success = "Oops! Your approval is on pending...";
+
+                        $_SESSION['email'] = $row['email'];
+                        $success = "Congratulation! You are logged in!";
+
+                        if ($type === "user") {
+                            $_SESSION['user_id'] = $row['user_id'];
+                            header("location: ./index.php");
+                        } else {
+                            header("location:./admin/dashboard.php");
+                        }
                     }
                 } else {
-
-                    $_SESSION['email'] = $row['email'];
-                    $success = "Congratulation! You are logged in...";
-
-                    if($type === "user") {
-                        $_SESSION['user_id'] = $row['user_id'];
-                        header("location: ./index.php");
-                    }
-                    else {
-                        header("location:./admin/dashboard.php");
-                    }
+                    $error = "Your account is blocked! Please contact to system administrator";
                 }
             } else {
-                // echo "<script>alert('Your password is wrong...')</script>";
-                $error = "Oops! Your password is wrong...";
+                $error = "Oops! Your password is wrong";
             }
         } else {
-            // echo "<script>alert('User not found...')</script>";
-            $error = "Oops! User not found..";
+            $error = "Oops! User not found";
         }
     } else {
-        // echo "<script>alert('Something went wrong...')</script>";
-        $error = "Oops! Something went wrong...";
+        $error = "Oops! Something went wrong";
     }
 }
