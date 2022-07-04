@@ -104,7 +104,7 @@ include('./action/add-cart.php');
                                                     <i class="fa fa-minus"></i>
                                                 </button>
                                             </div>
-                                            <input type="text" class="form-control bg-secondary text-center h-100" value="<?php echo $row['quantity'] ?>" id="quantity-<?php echo $id ?>" name="p_quantity" min="1" required>
+                                            <input type="text" class="form-control bg-secondary text-center h-100" onchange="check(<?php echo $id ?>)" value="<?php echo $row['quantity'] ?>" id="quantity-<?php echo $id ?>" name="p_quantity" min="1" required>
                                             <div class="input-group-btn">
                                                 <button type="button" class="btn btn-primary btn-plus" onclick="incQuantity(<?php echo $id ?>)">
                                                     <i class="fa fa-plus"></i>
@@ -204,16 +204,8 @@ include('./action/add-cart.php');
                             <h6 class="font-weight-medium">Total</h6>
                             <h6 class="font-weight-medium">&#8377;<span id="total-cart-cost"><?php echo $total_cart_cost ?></span></h6>
                         </div>
-                        <!-- <div class="d-flex justify-content-between">
-                            <h6 class="font-weight-medium">Shipping</h6>
-                            <h6 class="font-weight-medium">&#8377;<span id="shipping-cost">10</span></h6>
-                        </div> -->
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
-                        <!-- <div class="d-flex justify-content-between mt-2">
-                            <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold">&#8377;<span id="total-cost"><?php echo 10 + $total_cart_cost ?></span></h5>
-                        </div> -->
                         <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
                     </div>
                 </div>
@@ -296,14 +288,16 @@ include('./action/add-cart.php');
     </div>
     <!-- Footer End -->
 
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
-
     <!-- JavaScript start -->
     <script>
         const totalCartCost = document.getElementById('total-cart-cost');
-        // const shippingCost = document.getElementById('shipping-cost');
+
+        const check = (id) => {
+            let value = document.getElementById('quantity-' + id).value;
+            if (value <= 0) {
+                alert('Item should be more than 0!');
+            }
+        }
 
         const incQuantity = (id) => {
             let quantity_value = document.getElementById('quantity-' + id).value;
@@ -387,6 +381,7 @@ include('./action/add-cart.php');
         }
     </script>
     <!-- JavaScript end -->
+
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>

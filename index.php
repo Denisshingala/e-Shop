@@ -158,11 +158,7 @@ require('./action/add-cart.php');
                         echo '<div class="col-lg-4 col-md-6 pb-1">
                             <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
                                 <p class="text-right">' . $countProduct . ' Products</p>
-<<<<<<< HEAD
-                                <a href="products.php?cid=' . $row['category_id'] . '&page_no=1" class="cat-img position-relative overflow-hidden mb-3">
-=======
                                 <a href="" class="cat-img position-relative overflow-hidden mb-3">
->>>>>>> 8b35b621634a2fd7279e75873f4534c1c470dccf
                                     <img class="img-fluid" src="./' . $image . '" alt="" style="width:100%; height:250px;">
                                 </a>
                                 <h5 class="font-weight-semi-bold m-0">' . $category . '</h5>
