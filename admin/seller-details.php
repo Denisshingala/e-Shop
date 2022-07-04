@@ -1,7 +1,7 @@
 <?php
 require('../configuration/config.php');
 require('action/auth.php');
-require('action/block-seller.php');
+require('action/block-unblock-seller.php');
 ?>
 
 <!doctype html>

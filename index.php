@@ -1,7 +1,7 @@
 <?php
 require('./configuration/config.php');
 require('./action/auth.php');
-require('./action/add-cart.php');
+require('./user/action/add-cart.php');
 ?>
 
 <!DOCTYPE html>

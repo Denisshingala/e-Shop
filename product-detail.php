@@ -17,7 +17,7 @@ if (!isset($_GET['pid'])) {
     $stmt->close();
 }
 
-require('./action/add-cart.php');
+require('./user/action/add-cart.php');
 ?>
 
 <!DOCTYPE html>
