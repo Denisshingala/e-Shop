@@ -24,7 +24,7 @@ require('./action/add-product.php');
     <main class="d-flex">
         <?php include('utilities/side-navbar.php') ?>
 
-        <div style="width:100%;">
+        <div class="main-body" style="width:100%;">
             <?php include('utilities/error-success.php') ?>
 
             <h4 class="p-3 pl-5 text-white" style="background-color:rgb(67, 144, 233);">Add Product</h4>

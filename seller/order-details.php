@@ -32,7 +32,7 @@ require('action/auth.php');
     <main class="d-flex">
         <?php include('utilities/side-navbar.php') ?>
 
-        <div class="p-2">
+        <div class="main-body" class="p-2">
 
             <table class="table table-bordered table-responsive table-striped text-center my-auto" id="myTable">
                 <thead>
