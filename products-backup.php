@@ -31,6 +31,8 @@ $limitPerPage = 2;
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="style.css" rel="stylesheet">
+
+
 </head>
 
 <body>
@@ -45,9 +47,14 @@ $limitPerPage = 2;
         <div class="row px-xl-5">
             <!-- Shop Sidebar Start -->
             <div class="col-lg-3 col-md-12">
+
+                <!-- Hidden field to get categoryID in JS  -->
+                <input type="hidden" name="category_id" id="category-id" value="<?php echo $categoryID; ?>">
+                <input type="hidden" name="page_no" id="page-no" value="<?php echo $pageNo; ?>">
+
                 <!-- Price Start -->
-                <div class="border-bottom mb-4 pb-4">
-                    <h5 class="font-weight-semi-bold mb-4">Price Range</h5>
+                <div class="border-bottom mb-4 pb-4" id="price-range">
+                    <h5 class="font-weight-semi-bold mb-4">Price Range (&#x20b9;)</h5>
                     <form>
 
                         <?php
@@ -68,23 +75,18 @@ $limitPerPage = 2;
                             for ($i = 0; $i < 4; $i++) {
                                 $minValue = $arr[$i];
                                 $maxValue = $arr[$i + 1];
+                                $range = $minValue . ' - ' . $maxValue;
                         ?>
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" class="custom-control-input" id="price-<?php echo $i + 1; ?>" onclick="fetchData(<?php echo $minValue; ?>, <?php echo $maxValue; ?>)">
+                                    <input type="checkbox" name="price-range" class="custom-control-input price-range" id="price-<?php echo $i + 1; ?>" value="<?php echo $range; ?>">
 
-                                    <label class="custom-control-label" for="price-<?php echo $i + 1; ?>">&#x20b9;<?php echo $minValue; ?> - &#x20b9;<?php echo $maxValue; ?></label>
+                                    <label class="custom-control-label" for="price-<?php echo $i + 1; ?>"><?php echo $range; ?></label>
                                     <span class="badge border font-weight-normal">150</span>
                                 </div>
                         <?php
                             }
                         }
                         ?>
-
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-above">
-                            <label class="custom-control-label" for="price-1">&#x20b9;<?php echo $arr[4]; ?> and above</label>
-                            <span class="badge border font-weight-normal">150</span>
-                        </div>
 
                     </form>
                 </div>
@@ -102,17 +104,20 @@ $limitPerPage = 2;
                         $stmt->execute();
                         $result = $stmt->get_result();
                         if ($result->num_rows > 0) {
-                            $categories = '';
+                            $i = 1;
                             while ($row = $result->fetch_assoc()) {
-                                echo '<div class="custom-control custom-checkbox d-flex align-items-center justify-content-between py-1">
-                                    <input type="checkbox" class="custom-control-input brand" id="color-5">
-                                    <label class="custom-control-label" for="color-5">' . $row['brand'] . '</label>
-                                    <span class="badge border font-weight-normal">168</span>
+
+                                echo '<div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                                    <input type="checkbox" name="brand" class="custom-control-input brand" id="brand-' . $i . '" value="' . $row['brand'] . '">
+
+                                    <label class="custom-control-label" for="brand-' . $i . '">' . $row['brand'] . '</label>
+                                    <span class="badge border font-weight-normal">150</span>
                                 </div>';
+
+                                $i++;
                             }
                         }
                         ?>
-
 
                     </form>
                 </div>
@@ -121,110 +126,10 @@ $limitPerPage = 2;
 
             <!-- Shop Sidebar End -->
 
-
-            <!-- Shop Product Start -->
-            <div class="col-lg-9 col-md-12">
-                <div class="row pb-3">
-
-                    <?php
-                    $offset = ($pageNo - 1) * $limitPerPage;
-
-                    $sql = "SELECT * FROM product WHERE category_id = ? LIMIT {$offset},{$limitPerPage}";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->bind_param("i", $categoryID);
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    if ($result->num_rows > 0) {
-                        $cards = "";
-                        while ($row = $result->fetch_assoc()) {
-                            $images = explode(',', $row['image']);
-
-                            echo '<div class="col-lg-4 col-md-6 col-sm-12 pb-1">
-                                    <div class="card product-item border-0 mb-4">
-                                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0" style="height:250px;">
-                                            <img class="img-fluid w-100" src="./' . $images[0] . '" style="object-fit:contain; height:250px;" alt="Product">
-                                        </div>
-                                        <div class="card-body border-left border-right text-center p-0 pt-4 pb-3 px-3">
-                                            <h6 class="text-truncate mb-3">' . $row['title'] . '</h6>
-                                            <div class="d-flex justify-content-center">
-                                                <h6>&#x20b9 ' . ($row['price'] - ($row['price'] * $row['discount'] / 100)) . '</h6>
-                                                <h6 class="text-muted ml-2"><del>&#x20b9 ' . $row['price'] . '</del></h6>
-                                            </div>
-                                        </div>
-                                        <div class="card-footer d-flex justify-content-between bg-light border">
-                                            <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                            <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                                        </div>
-                                    </div>
-                                </div>';
-                        }
-                    }
-                    ?>
-
-                    <!-- Pagination Start -->
-                    <div class="col-12 pb-1">
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination justify-content-center mb-3">
-                                <li class="page-item">
-                                    <?php
-                                    $hrefNext = '';
-                                    $disabled = '';
-                                    if ($pageNo == 1) {
-                                        $disabled = 'disabled';
-                                    } else {
-                                        $hrefPrev = 'products.php?cid=' . $categoryID . '&page_no=' . ($pageNo - 1);
-                                    }
-                                    ?>
-
-                                    <a class="page-link" href="<?php echo $hrefPrev; ?>" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                </li>
-
-                                <?php
-                                $sql = "SELECT * FROM product WHERE category_id = ?";
-                                $stmt = $conn->prepare($sql);
-                                $stmt->bind_param("i", $categoryID);
-                                $stmt->execute();
-                                $result = $stmt->get_result();
-                                if ($result->num_rows > 0) {
-                                    $totalNoOfRows = $result->num_rows;
-                                    $li = "";
-                                    $totalPages = ceil($totalNoOfRows / $limitPerPage);
-
-                                    for ($i = 1; $i <= $totalPages; $i++) {
-                                        ($pageNo == $i) ? $active = 'active' : $active = '';
-
-                                        $li .= '<li class="page-item ' . $active . '"><a class="page-link" href="products.php?cid=' . $categoryID . '&page_no=' . $i . '">' . $i . '</a></li>';
-                                    }
-                                    echo $li;
-                                }
-                                ?>
-
-                                <?php
-                                $hrefNext = '';
-                                $disabled = '';
-                                if ($pageNo == $totalPages) {
-                                    $disabled = 'disabled';
-                                } else {
-                                    $hrefNext = 'products.php?cid=' . $categoryID . '&page_no=' . ($pageNo + 1);
-                                }
-                                ?>
-
-                                <li class="page-item <?php echo $disabled; ?>">
-                                    <a class="page-link" href="<?php echo $hrefNext; ?>" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <!-- Pagination End -->
-                </div>
+            <div class="col-lg-9 col-md-12" id="show-products-category-wise">
             </div>
-            <!-- Shop Product End -->
+
+
         </div>
     </div>
     <!-- Shop End -->
@@ -306,15 +211,9 @@ $limitPerPage = 2;
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
-    <!-- Contact Javascript File -->
-    <script src="mail/jqBootstrapValidation.min.js"></script>
-    <script src="mail/contact.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
 </body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="script.js"></script>
 
 </html>
