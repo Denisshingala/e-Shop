@@ -1,6 +1,7 @@
 <?php
 require('../configuration/config.php');
 require('action/auth.php');
+require('action/block-seller.php');
 ?>
 
 <!doctype html>
@@ -24,6 +25,7 @@ require('action/auth.php');
         <?php include('utilities/side-navbar.php') ?>
 
         <div class="p-4 main-body">
+            <?php include('utilities/alert.php') ?>
 
             <table class="table table-bordered table-responsive table-striped" id="myTable">
                 <thead class="text-center">
@@ -35,13 +37,15 @@ require('action/auth.php');
                         <th>GST No.</th>
                         <th>Bank Account No.</th>
                         <th>IFSC code</th>
+                        <th>Block</th>
+                        <th>Remove</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
                     include('../configuration/config.php');
 
-                    $sql = "SELECT * FROM seller WHERE status = 'approve'";
+                    $sql = "SELECT * FROM seller WHERE status = 'approve' OR status = 'block'";
                     $stmt = $conn->prepare($sql);
                     $stmt->execute();
                     $result = $stmt->get_result();
@@ -55,6 +59,22 @@ require('action/auth.php');
 									<td>' . $row['gst_number'] . '</td>
 									<td>' . $row['account_number'] . '</td>
 									<td>' . $row['IFSC_code'] . '</td>
+                                    <td>';
+                                    if ($row['status'] === 'approve') {
+                                        echo '<form action="' . $_SERVER['PHP_SELF'] . '" method="POST">
+                                                    <button type="submit" class="btn btn-danger btn-sm w-100" value="' . $row['seller_id'] . '" name="block_btn">Block</button>
+                                                </form>';
+                                    } else {
+                                        echo '<form action="' . $_SERVER['PHP_SELF'] . '" method="POST">
+                                                    <button type="submit" class="btn btn-success btn-sm w-100" value="' . $row['seller_id'] . '" name="unblock_btn">Unblock</button>
+                                                </form>';
+                                    }
+                                    echo '</td>
+                                    <td>
+                                        <form action="' . $_SERVER['PHP_SELF'] . '" method="POST">
+                                            <button type="submit" class="btn btn-danger btn-sm w-100" value="' . $row['seller_id'] . '" name="delete_btn">Remove</button>
+                                        </form>
+                                    </td>
 								</tr>';
                         }
                     }

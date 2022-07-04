@@ -21,7 +21,7 @@
         if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') {
         ?>
             <div class="col-lg-3 col-6 text-right">
-                <a href="/e-shop/cart.php" class="btn border">
+                <a href="/e-shop/user/cart.php" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
                     <span class="badge">
                         <?php
