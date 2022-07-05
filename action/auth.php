@@ -6,9 +6,6 @@ if (isset($_SESSION['email'])) {
     else if ($_SESSION['type'] == 'admin') {
         header("location:/e-shop/admin/dashboard.php");
     }
-    else {
-        // TODO : user
-    }
 }
 $error = "";
 $success = "";

@@ -1,6 +1,6 @@
 <?php
-session_start();
-include('../configuration/config.php');
+require('../configuration/config.php');
+require('../action/auth.php');
 
 if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') {
     $email = $_SESSION['email'];
@@ -75,13 +75,11 @@ if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') {
                                         else
                                             echo '<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Name">';
                                         ?>
-                                        <!-- <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Maxwell Admin"> -->
                                         <label for="profile-update-input">
                                             <!-- <i class="fa-solid fa-pencil"></i> -->
                                             <input type="file" name="profile-update-input" id="profile-update-input" accept=".jpg, .jpeg, .png">
                                         </label>
                                     </div>
-                                    <!-- </form> -->
                                     <h5 class="user-name"><?php echo $name; ?></h5>
                                     <h6 class="user-email"><?php echo $email; ?></h6>
                                 </div>
@@ -92,9 +90,6 @@ if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') {
 
             <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
                 <div class="card h-100">
-
-                    <!-- <form action="./action/update-profile.php" method="POST"> -->
-
                     <div class="card-body">
                         <div class="row gutters">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -127,7 +122,7 @@ if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') {
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                 <div class="form-group">
-                                    <label for="DOB">Date Of Birth</label>
+                                    <label for="DOB">Date Of Birth <small>(MM/DD/YYYY)</small> </label>
                                     <input type="date" class="form-control" id="DOB" name="DOB" value="<?php echo $dob; ?>">
                                 </div>
                             </div>
@@ -172,7 +167,7 @@ if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') {
                         <div class="row gutters">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="text-right">
-                                    <button type="submit" onclick="back()" id="back-btn" name="back-btn" class="btn btn-secondary">Back</button>
+                                    <!-- <button type="submit" onclick="back()" id="back-btn" name="back-btn" class="btn btn-secondary">Back</button> -->
                                     <button type="submit" id="update-profile-btn" name="update-profile-btn" class="btn btn-primary">Update</button>
                                 </div>
                             </div>
@@ -190,10 +185,10 @@ if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') {
 
 </body>
 
-<script>
+<!-- <script>
     function back() {
         history.go(-3);
     }
-</script>
+</script> -->
 
 </html>

@@ -85,14 +85,14 @@ else
                 <div class="navbar-nav w-100 overflow-hidden">
 
                     <?php
-                    $sql = "SELECT category_name FROM category";
+                    $sql = "SELECT * FROM category";
                     $stmt = $conn->prepare($sql);
                     $stmt->execute();
                     $result = $stmt->get_result();
                     if ($result->num_rows > 0) {
                         $categories = "";
                         while ($row = $result->fetch_assoc()) {
-                            $categories .= '<a href="#" class="nav-item nav-link">' . $row['category_name'] . '</a>';
+                            $categories .= '<a href="'.$path.'user/products.php?cid='.$row['category_id'].'&page_no=1" class="nav-item nav-link">' . $row['category_name'] . '</a>';
                         }
                         echo $categories;
                     }
@@ -136,9 +136,9 @@ else
                         <div class="navbar-nav ml-auto py-0">
                             <?php
                             if ($filename == 'index.php')
-                                echo '<a href="./action/logout.php" class="nav-item nav-link">Logout</a>';
+                                echo '<a href="'.$path.'action/logout.php" class="nav-item nav-link">Logout</a>';
                             else
-                                echo '<a href="../action/logout.php" class="nav-item nav-link">Logout</a>';
+                                echo '<a href="'.$path.'action/logout.php" class="nav-item nav-link">Logout</a>';
                             ?>
 
                         </div>
