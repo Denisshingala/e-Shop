@@ -1,15 +1,20 @@
 <?php
 $filename = basename($_SERVER['REQUEST_URI']);
+
+if ($filename == 'index.php' || $filename == 'e-shop')
+    $path = '';
+else
+    $path = '../';
 ?>
 
 <div class="container-fluid">
     <div class="row align-items-center px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
             <a href="index.php" class="text-decoration-none">
-                <?php 
-                if($filename == 'index.php' || $filename == 'e-shop')
+                <?php
+                if ($filename == 'index.php' || $filename == 'e-shop')
                     echo '<img src="./images/logo.png" alt="e-Shop" width="140" height="130">';
-                else 
+                else
                     echo '<img src="../images/logo.png" alt="e-Shop" width="140" height="130">';
                 ?>
             </a>
@@ -34,16 +39,30 @@ $filename = basename($_SERVER['REQUEST_URI']);
                     <i class="fas fa-shopping-cart text-primary"></i>
                     <span class="badge">
                         <?php
-
                         $sql = "SELECT * from `cart` WHERE user_id=?";
                         $stmt = $conn->prepare($sql);
                         $stmt->bind_param("i", $_SESSION['user_id']);
                         $stmt->execute();
                         $result = $stmt->get_result();
                         echo $result->num_rows;
-
                         ?>
                     </span>
+                </a>
+                <a href="/e-shop/user/profile.php" class="mx-4">
+                    <?php
+                    $sql = "SELECT profile_image from user WHERE user_id=?";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("i", $_SESSION['user_id']);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $row = $result->fetch_assoc();
+                    if ($row['profile_image'] !== '')
+                        echo '<img src="' . $path . $row['profile_image'] . '" alt="Profile picture" width="50" height="50" style="border-radius:50%;">';
+                    else
+                        echo '<img src="' . $path . 'https://bootdey.com/img/Content/avatar/avatar7.png" alt="Profile picture" width="50" height="50" style="border-radius:50%; border:1px solid rgba(0,0,0,0.3); padding:2px;">';
+
+                    ?>
+
                 </a>
             </div>
 
@@ -91,7 +110,8 @@ $filename = basename($_SERVER['REQUEST_URI']);
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="index.php" class="nav-item nav-link">Home</a>
+
+                        <a href="<?php echo $path; ?>index.php" class="nav-item nav-link">Home</a>
                         <a href="shop.html" class="nav-item nav-link">Shop</a>
                         <a href="detail.html" class="nav-item nav-link active">Shop Detail</a>
                         <div class="nav-item dropdown">
@@ -102,12 +122,12 @@ $filename = basename($_SERVER['REQUEST_URI']);
                             </div>
                         </div>
                         <?php
-                        if($filename == 'index.php')
+                        if ($filename == 'index.php' || $filename == 'e-shop')
                             echo '<a href="user/contact-us.php" class="nav-item nav-link">Contact</a>';
                         else
                             echo '<a href="contact-us.php" class="nav-item nav-link">Contact</a>';
                         ?>
-                        
+
                         <?php if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') {
                             echo '<a href="order-history.html" class="nav-item nav-link">Order history</a>';
                         } ?>
@@ -115,16 +135,17 @@ $filename = basename($_SERVER['REQUEST_URI']);
                     <?php if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') { ?>
                         <div class="navbar-nav ml-auto py-0">
                             <?php
-                            if($filename == 'index.php')
+                            if ($filename == 'index.php')
                                 echo '<a href="./action/logout.php" class="nav-item nav-link">Logout</a>';
                             else
                                 echo '<a href="../action/logout.php" class="nav-item nav-link">Logout</a>';
                             ?>
-                            
+
                         </div>
                     <?php } else { ?>
                         <div class="navbar-nav ml-auto py-0">
-                            <a href="login.php" class="nav-item nav-link">Login/Register</a>
+
+                            <a href="<?php echo $path; ?>login.php" class="nav-item nav-link">Login/Register</a>
                         </div>
                     <?php } ?>
                 </div>
