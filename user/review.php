@@ -43,7 +43,7 @@ if (isset($_GET['pid']))
 
     <hr>
 
-    <div class="container-fluid px-xl-5">
+    <div class="container-fluid px-xl-5 py-3">
         <?php
         $sql = "SELECT title FROM product WHERE product_id=?";
         $stmt = $conn->prepare($sql);
@@ -51,7 +51,7 @@ if (isset($_GET['pid']))
         $stmt->execute();
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
-        echo '<h4>Reviews for ' . $row['title'] . '</h4>'
+        echo '<h4 class="my-4">Reviews for ' . $row['title'] . '</h4>'
         ?>
 
         <div id="review-section">

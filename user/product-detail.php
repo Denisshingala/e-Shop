@@ -281,7 +281,7 @@ if (isset($_POST['place_order'])) {
                             }
 
                             if ($noOfReviews > 3)
-                                echo '<a href="review.php" style="float:right; font-size:18px;">More Reviews >></a>';
+                                echo '<a href="review.php?pid='.$productID.'" style="float:right; font-size:18px;">More Reviews >></a>';
                             ?>
                         </div>
 
@@ -315,7 +315,7 @@ if (isset($_POST['place_order'])) {
                         } else {
                         ?>
                             <button class="btn btn-primary px-3 align-center" style="height:50px;">
-                                <a href="" style="color:black;">Login to review</a>
+                                <a href="/e-shop/login.php" style="color:black;">Login to review</a>
                             </button>
                         <?php
                         }
