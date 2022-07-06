@@ -1,5 +1,6 @@
 <?php
 $filename = basename($_SERVER['REQUEST_URI']);
+// include('../../configuration/config.php');
 
 if ($filename == 'index.php' || $filename == 'e-shop')
     $path = '';
@@ -20,16 +21,38 @@ else
             </a>
         </div>
         <div class="col-lg-6 col-6 text-left">
-            <form action="">
+
+            <?php
+            if (isset($_POST['search-btn']) && $_POST['search-text'] !== '') {
+                $searchText = $conn->real_escape_string($_POST['search-text']);
+                $array = explode(' ', $searchText);
+
+                foreach($array as $search) {
+                    $sql = "SELECT * from product JOIN category ON category.category_id = product.category_id WHERE match(category.category_name, product.title) against(?);";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("i", $search);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    if($result->num_rows > 0) {
+                        $row = $result->fetch_assoc();
+                        header("location: /e-shop/user/products.php?cid=${$row['category_id']}");
+                    }   
+                }
+                echo "No match found";
+            }
+            ?>
+
+            <form action="" method="POST">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for products">
+                    <input type="text" class="form-control" placeholder="Search for products" name="search-text" id="search-text">
                     <div class="input-group-append">
-                        <span class="input-group-text bg-transparent text-primary">
+                        <button type="submit" name="search-btn" id="search-btn" class="input-group-text bg-transparent text-primary">
                             <i class="fa fa-search"></i>
-                        </span>
+                        </button>
                     </div>
                 </div>
             </form>
+
         </div>
         <?php
         if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') {
@@ -92,7 +115,7 @@ else
                     if ($result->num_rows > 0) {
                         $categories = "";
                         while ($row = $result->fetch_assoc()) {
-                            $categories .= '<a href="'.$path.'user/products.php?cid='.$row['category_id'].'&page_no=1" class="nav-item nav-link">' . $row['category_name'] . '</a>';
+                            $categories .= '<a href="' . $path . 'user/products.php?cid=' . $row['category_id'] . '&page_no=1" class="nav-item nav-link">' . $row['category_name'] . '</a>';
                         }
                         echo $categories;
                     }
@@ -110,7 +133,7 @@ else
                     <div class="navbar-nav mr-auto py-0">
 
                         <a href="<?php echo $path; ?>index.php" class="nav-item nav-link">Home</a>
-        
+
                         <?php
                         if ($filename == 'index.php' || $filename == 'e-shop')
                             echo '<a href="user/contact-us.php" class="nav-item nav-link">Contact</a>';
@@ -126,9 +149,9 @@ else
                         <div class="navbar-nav ml-auto py-0">
                             <?php
                             if ($filename == 'index.php')
-                                echo '<a href="'.$path.'action/logout.php" class="nav-item nav-link">Logout</a>';
+                                echo '<a href="' . $path . 'action/logout.php" class="nav-item nav-link">Logout</a>';
                             else
-                                echo '<a href="'.$path.'action/logout.php" class="nav-item nav-link">Logout</a>';
+                                echo '<a href="' . $path . 'action/logout.php" class="nav-item nav-link">Logout</a>';
                             ?>
 
                         </div>

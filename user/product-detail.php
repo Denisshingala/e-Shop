@@ -162,6 +162,8 @@ if (isset($_POST['place_order'])) {
                 <h3 class="font-weight-semi-bold"><small class="mr-2" style="color:red;">-<?php echo $discount; ?>% </small> &#x20b9; <?php echo ($row['price'] - ($row['price'] * $row['discount'] / 100)); ?></h3>
                 <p><small style="margin-bottom: 100px; !important">M.R.P. <del>&#x20b9; <?php echo $price; ?></del></small></p>
 
+                <p><span style="font-weight:bold; color:black; font-size:1.2rem; ">Brand : </span><?php echo $row['brand']; ?></p>
+
                 <p class="my-5" style="line-height:20px;"><?php echo $description; ?></p>
 
                 <form method="POST" action="<?php echo $_SERVER['REQUEST_URI'] ?>" onsubmit="return verifyItem()">
@@ -281,7 +283,7 @@ if (isset($_POST['place_order'])) {
                             }
 
                             if ($noOfReviews > 3)
-                                echo '<a href="review.php?pid='.$productID.'" style="float:right; font-size:18px;">More Reviews >></a>';
+                                echo '<a href="review.php?pid=' . $productID . '" style="float:right; font-size:18px;">More Reviews >></a>';
                             ?>
                         </div>
 
