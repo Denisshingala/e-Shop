@@ -17,7 +17,23 @@ if (!isset($_GET['pid'])) {
     $stmt->close();
 }
 
-require('./user/action/add-cart.php');
+require('./action/add-cart.php');
+
+if (isset($_POST['place_order'])) {
+    $_SESSION['item'][0]['id'] = $_GET['pid'];
+    $_SESSION['item'][0]['quantity'] = mysqli_real_escape_string($conn, $_POST['p_quantity']);
+    if (isset($_POST['p_colour']))
+        $_SESSION['item'][0]['colour'] = mysqli_real_escape_string($conn, $_POST['p_colour']);
+    else
+        $_SESSION['item'][0]['colour'] = NULL;
+
+    if (isset($_POST['p_size']))
+        $_SESSION['item'][0]['size'] = mysqli_real_escape_string($conn, $_POST['p_size']);
+    else
+        $_SESSION['item'][0]['size'] = NULL;
+    header("location:/e-shop/user/check-out.php");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -87,7 +103,7 @@ require('./user/action/add-cart.php');
                             $categoryID = $row['category_id'];
 
                             $description =
-                                str_replace(array("\r\n", "\r", "\n", "\\r", "\\n", "\\r\\n"), "<br/>", $description);
+                                str_replace(array("\r\n", "\r", "\n", "\\r", "\\n", "\\r\\n", "\\\""), "<br/>", $description);
 
                             $images = explode(',', $row['image']);
                             $count = 0;
@@ -171,14 +187,14 @@ require('./user/action/add-cart.php');
                         </div>
                     <?php } ?>
 
-                    <div class="d-flex align-items-center mb-4 pt-2">
+                    <div class="d-flex align-items-center mb-4 pt-2" style="width: 380px;">
                         <div class="input-group quantity mr-3" style="width: 200px;">
                             <div class="input-group-btn">
                                 <button type="button" class="btn btn-primary btn-minus h-100" onclick="decQuantity()" <?php echo isset($_SESSION['user_id']) ? "" : "disabled" ?>>
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </div>
-                            <input type="text" class="form-control bg-secondary text-center" value="1" id="quantity" name="p_quantity" min="1" required>
+                            <input type="text" class="form-control bg-secondary text-center" value="1" id="quantity" name="p_quantity" min="1" <?php echo isset($_SESSION['user_id']) ? "" : "disabled" ?> required>
                             <div class="input-group-btn">
                                 <button type="button" class="btn btn-primary btn-plus h-100" onclick="incQuantity()" <?php echo isset($_SESSION['user_id']) ? "" : "disabled" ?>>
                                     <i class="fa fa-plus"></i>
@@ -187,6 +203,12 @@ require('./user/action/add-cart.php');
                         </div>
                         <button class="btn btn-primary px-3" <?php echo isset($_SESSION['user_id']) ? "" : "disabled" ?> name="add_cart" type="submit"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
                     </div>
+                    <div class="d-flex flex-row mb-3" style="width: 370px;">
+                        <hr class="border w-50 mr-3">
+                        <div class="align-middle m-0 py-1">OR</div>
+                        <hr class="border w-50 ml-3">
+                    </div>
+                    <button class="btn btn-primary px-3" style="width: 370px;" <?php echo isset($_SESSION['user_id']) ? "" : "disabled" ?> name="place_order" type="submit"><i class="fa fa-shopping-bag"></i> Place an Order</button>
                 </form>
             </div>
         </div>
@@ -285,7 +307,7 @@ require('./user/action/add-cart.php');
         </div>
         <div class="row px-xl-5">
             <div class="col">
-                <div class="owl-carousel related-carousel d-flex justify-content-between">
+                <div class="owl-carousel related-carousel d-flex justify-content-around flex-wrap">
 
                     <?php
                     $sql1 = "SELECT * FROM product WHERE category_id=? ORDER BY RAND() LIMIT 5";
@@ -297,9 +319,9 @@ require('./user/action/add-cart.php');
                         while ($row1 = $result1->fetch_assoc()) {
                             $images = explode(',', $row1['image']);
 
-                            echo '<div class="card product-item border-0 w-25">
+                            echo '<div class="card product-item border-0 w-25 mx-2 my-3">
                                         <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-4 overflow-hidden" style="object-fit: contain;">
-                                            <img src="' . $images[0] . '" alt="" style="object-fit:contain; width: 100%; height: 50vh;">
+                                            <img src="../' . $images[0] . '" alt="" style="object-fit:contain; width: 100%; height: 50vh;">
                                         </div>
                                         <div class="card-body border-left border-right text-center p-4">
                                             <h6 class="text-truncate mb-3">' . $row1['title'] . '</h6>
@@ -406,23 +428,10 @@ require('./user/action/add-cart.php');
     </div>
     <!-- Footer End -->
 
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
-
-
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
 
-    <!-- Contact Javascript File -->
-    <script src="mail/jqBootstrapValidation.min.js"></script>
-    <script src="mail/contact.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
 </body>
 
 </html>

@@ -91,7 +91,7 @@ $filename = basename($_SERVER['REQUEST_URI']);
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="index.php" class="nav-item nav-link">Home</a>
+                        <a href="../index.php" class="nav-item nav-link">Home</a>
                         <a href="shop.html" class="nav-item nav-link">Shop</a>
                         <a href="detail.html" class="nav-item nav-link active">Shop Detail</a>
                         <div class="nav-item dropdown">
@@ -124,7 +124,7 @@ $filename = basename($_SERVER['REQUEST_URI']);
                         </div>
                     <?php } else { ?>
                         <div class="navbar-nav ml-auto py-0">
-                            <a href="login.php" class="nav-item nav-link">Login/Register</a>
+                            <a href="/e-shop/login.php" class="nav-item nav-link">Login/Register</a>
                         </div>
                     <?php } ?>
                 </div>

@@ -49,7 +49,7 @@ require('./user/action/add-cart.php');
     <div id="header-carousel" class="carousel slide my-3" data-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item" style="height: 410px;">
-                <img class="img-fluid" src="images/banners/banner-16.jpg" alt="Image">
+                <img class="img-fluid" src="images/banners/banner-20.avif" alt="Image">
                 <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                     <div class="p-3" style="max-width: 700px;">
                         <h3 class="display-4 text-white font-weight-semi-bold mb-4">Quality Product</h3>
@@ -58,7 +58,7 @@ require('./user/action/add-cart.php');
                 </div>
             </div>
             <div class="carousel-item active" style="height: 410px;">
-                <img class="img-fluid" src="images/categories/category-1.jpg" alt="Image">
+                <img class="img-fluid" src="images/banners/banner-4.jpg" alt="Image">
                 <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                     <div class="p-3" style="max-width: 700px;">
                         <h3 class="display-4 text-white font-weight-semi-bold mb-4">Fashionable Shoes</h3>
@@ -67,7 +67,7 @@ require('./user/action/add-cart.php');
                 </div>
             </div>
             <div class="carousel-item" style="height: 410px;">
-                <img class="img-fluid" src="images/products/product-10.jpg" alt="Image">
+                <img class="img-fluid" src="images/banners/banner-22.avif" alt="Image">
                 <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                     <div class="p-3" style="max-width: 700px;">
                         <h3 class="display-4 text-white font-weight-semi-bold mb-4">Reasonable Price</h3>

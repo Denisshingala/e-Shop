@@ -13,7 +13,7 @@ if (isset($_POST['add_item_id'])) {
                 <i class="fa fa-minus"></i>
             </button>
         </div>
-        <input type="text" class="form-control bg-secondary text-center h-100" value="' . $quantity . '" id="quantity-' . $_POST['add_item_id'] . '" name="p_quantity" min="1" required>
+        <input type="text" name="quantity[]" class="form-control bg-secondary text-center h-100" value="' . $quantity . '" id="quantity-' . $_POST['add_item_id'] . '" min="1" required>
         <div class="input-group-btn">
             <button type="button" class="btn btn-primary btn-plus" onclick="incQuantity(' . $_POST['add_item_id'] . ')">
                 <i class="fa fa-plus"></i>
@@ -35,7 +35,7 @@ if (isset($_POST['remove_item_id'])) {
                 <i class="fa fa-minus"></i>
             </button>
         </div>
-        <input type="text" class="form-control bg-secondary text-center h-100" value="' . $quantity . '" id="quantity-' . $_POST['remove_item_id'] . '" name="p_quantity" min="1" required>
+        <input type="text" name="quantity[]" class="form-control bg-secondary text-center h-100" value="' . $quantity . '" id="quantity-' . $_POST['remove_item_id'] . '" min="1" required>
         <div class="input-group-btn">
             <button type="button" class="btn btn-primary btn-plus" onclick="incQuantity(' . $_POST['remove_item_id'] . ')">
                 <i class="fa fa-plus"></i>
