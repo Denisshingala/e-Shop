@@ -34,7 +34,7 @@ require('action/auth.php');
 
         <div class="main-body" class="p-2">
 
-            <table class="table table-bordered table-responsive table-striped text-center my-auto" id="myTable">
+            <table class="table table-bordered table-responsive table-striped text-center my-5" style="width: 850px" id="myTable"f>
                 <thead>
                     <tr style="background-color: rgb(95, 162, 240);">
                         <th>Order ID</th>
@@ -65,17 +65,6 @@ require('action/auth.php');
                                 $colour = '-';
                             else
                                 $colour = $row['colour'];
-
-                            // if ($temp != '' && $temp == $row['order_id']) {
-                            //     echo '<tr>
-                            //     <td></td>';
-                            // }
-                            // else {
-                            //     $temp = $row['order_id'];
-                            //     echo '<tr>
-                            //     <td>' . $row['order_id'] . '</td>';
-                            // }
-
                             echo '<tr>
                                 <td>' . $row['order_id'] . '</td>
                                 <td style="width:300px;">' . $row['title'] . '</td>
