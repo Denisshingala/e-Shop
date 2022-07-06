@@ -68,7 +68,7 @@ if (isset($_POST['update-profile-btn'])) {
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sssssssss", $name, $gender, $dob, $address, $city, $state, $pincode, $country, $email);
     if ($stmt->execute()) {
-        header("location: ../profile.php");
+        header("location: /e-shop/");
     } else {
         echo "not updated";
     }
