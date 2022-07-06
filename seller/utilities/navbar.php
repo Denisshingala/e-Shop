@@ -4,13 +4,11 @@
             <img src="../images/logo.png" alt="e-shop" width="100" height="100">
         </a>
     </div>
-    <?php
-    if(isset($_SESSION['email'])) {
-        echo $_SESSION['email'];
-    }
-    ?>
     <form action="../action/logout.php">
+        <a href="/e-shop/seller/profile.php">
+            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Name" width="50" height="50" style="border: 1px solid rgba(0,0,0,0.3); border-radius:50%; padding:3px;">
+        </a>
         <button class="btn btn-danger" style="margin: 0 50px;">Logout</button>
-    </form>  
+    </form>
 </nav>
 <hr style="margin:0;">

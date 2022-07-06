@@ -17,6 +17,19 @@ if (!isset($_GET['pid'])) {
     $stmt->close();
 }
 
+if(isset($_POST['review-btn']) && $_POST['review-description'] != '') {
+    $description = $conn->real_escape_string($_POST['review-description']);
+    $today = date("Y-m-d");
+
+    $sql = "INSERT INTO reviews (product_id, user_id, description, review_date) VALUES (?,?,?,?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("iiss", $productID, $_SESSION['user_id'], $description, $today);
+    if($stmt->execute())
+        echo "Reviewed";
+    else
+        echo "Error in review";
+}
+
 require('./action/add-cart.php');
 
 if (isset($_POST['place_order'])) {
@@ -233,65 +246,81 @@ if (isset($_POST['place_order'])) {
 
         <div class="row px-xl-5">
             <div class="col">
-                <!-- <div class="nav nav-tabs justify-content-center border-secondary mb-4">
-                <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Description</a>
-                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Information</a>
-                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Reviews (0)</a>
-            </div> -->
                 <div class="nav nav-tabs justify-content-center border-secondary mb-4">
-                    <h3 style="color:#D19C97;">Reviews</h3>
+                    <?php
+                    $sql = "SELECT user.profile_image, user.name, reviews.review_date, reviews.description FROM reviews JOIN user ON user.user_id = reviews.user_id WHERE product_id=? ORDER BY RAND()";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("i", $productID);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $noOfReviews = $result->num_rows;
+                    ?>
+                    <h3 style="color:#D19C97;">Reviews (<?php echo $noOfReviews; ?>)</h3>
                 </div>
 
                 <div id="review-section">
                     <div class="row p-3">
                         <div class="col-md-6">
-                            <h4 class="mb-4">1 review for "Colorful Stylish Shirt"</h4>
-                            <div class="media mb-4">
-                                <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+
+                        <?php
+                        $noOfReviews < 3 ? $n = $noOfReviews : $n = 3;
+                        for($i = 0; $i < $n; ++$i) {
+                            $row = $result->fetch_assoc();
+                            if($row['profile_image'] === '')
+                                $src = "https://bootdey.com/img/Content/avatar/avatar7.png";
+                            else 
+                                $src = "../" . $row['profile_image'];
+
+                            echo '<div class="media mb-4">
+                                <img src="'.$src. '" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px; height: 45px; border-radius:50%;">
                                 <div class="media-body">
-                                    <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
-                                    <div class="text-primary mb-2">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
+                                    <h6>'.$row['name'].'<small> - <i>'.$row['review_date'].'</i></small></h6>
+                                    <p>'.$row['description'].'</p>
+                                </div>
+                            </div>';
+                        }
+                        
+                        if($noOfReviews > 3) 
+                            echo '<a href="" style="float:right; font-size:18px;">More Reviews >></a>';
+                        ?>  
+                        </div>
+
+                        <?php
+                        if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') {
+                        ?>
+                            <div class="col-md-6">
+                                <h4 class="mb-4">Leave a review</h4>
+                                <small>Your email address will not be published. Required fields are marked *</small>
+                                <div class="d-flex my-3">
+                                    <p class="mb-0 mr-2">Your Rating * :</p>
+                                    <div class="text-primary">
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
                                         <i class="far fa-star"></i>
                                     </div>
-                                    <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
                                 </div>
+                                <form action="" method="POST">
+                                    <div class="form-group">
+                                        <label for="review-description">Your Review *</label>
+                                        <textarea id="review-description" name="review-description" cols="30" rows="5" class="form-control"></textarea>
+                                    </div>
+                                    <div class="form-group mb-0">
+                                        <input type="submit" name="review-btn" value="Leave Your Review" class="btn btn-primary px-3">
+                                    </div>
+                                </form>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <h4 class="mb-4">Leave a review</h4>
-                            <small>Your email address will not be published. Required fields are marked *</small>
-                            <div class="d-flex my-3">
-                                <p class="mb-0 mr-2">Your Rating * :</p>
-                                <div class="text-primary">
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                </div>
-                            </div>
-                            <form>
-                                <div class="form-group">
-                                    <label for="message">Your Review *</label>
-                                    <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Your Name *</label>
-                                    <input type="text" class="form-control" id="name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Your Email *</label>
-                                    <input type="email" class="form-control" id="email">
-                                </div>
-                                <div class="form-group mb-0">
-                                    <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
-                                </div>
-                            </form>
-                        </div>
+                        <?php
+                        } else {
+                        ?>
+                            <button class="btn btn-primary px-3 align-center" style="height:50px;">
+                                <a href="" style="color:black;">Login to review</a>
+                            </button>
+                        <?php
+                        }
+                        ?>
+
                     </div>
                 </div>
             </div>

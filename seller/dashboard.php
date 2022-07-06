@@ -30,22 +30,22 @@ require('action/auth.php');
                     <div class="c-dashboardInfo col-lg-3 col-md-6">
                         <div class="wrap">
                             <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
-                                Portfolio Balance
-                            </h4><span class="hind-font caption-12 c-dashboardInfo__count">€10,500</span>
+                                Your Total Products
+                            </h4><span class="hind-font caption-12 c-dashboardInfo__count">10,500</span>
                         </div>
                     </div>
                     <div class="c-dashboardInfo col-lg-3 col-md-6">
                         <div class="wrap">
                             <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
-                                Rental income
-                            </h4><span class="hind-font caption-12 c-dashboardInfo__count">€500</span><span class="hind-font caption-12 c-dashboardInfo__subInfo">Last month: €30</span>
+                                Total Selling
+                            </h4><span class="hind-font caption-12 c-dashboardInfo__count">500</span><span class="hind-font caption-12 c-dashboardInfo__subInfo">Last month: &#x20B9;30</span>
                         </div>
                     </div>
                     <div class="c-dashboardInfo col-lg-3 col-md-6">
                         <div class="wrap">
                             <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
-                                Available funds
-                            </h4><span class="hind-font caption-12 c-dashboardInfo__count">€5000</span>
+                                Earnings
+                            </h4><span class="hind-font caption-12 c-dashboardInfo__count">&#x20B9;5000</span>
                         </div>
                     </div>
                     <div class="c-dashboardInfo col-lg-3 col-md-6">
