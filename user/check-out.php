@@ -16,7 +16,7 @@ if (!isset($_SESSION['item']) || !isset($_SESSION['user_id'])) {
     header("location:/e-shop/index.php");
 }
 
-include('./action/check-out.php')
+include('./action/check-out.php');
 
 ?>
 
@@ -105,18 +105,6 @@ include('./action/check-out.php')
                         <h4 class="font-weight-semi-bold mb-4">Billing Address</h4>
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <label>Name</label>
-                                <input class="form-control" type="text" name="name" placeholder="Mr.xyz" value="<?php echo $name ?>" required>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>E-mail</label>
-                                <input class="form-control" type="text" name="email" placeholder="example@email.com" value="<?php echo $email ?>" required>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Mobile No</label>
-                                <input class="form-control" type="text" name="mobile_no" placeholder="+91 123 456 7890" value="<?php echo $contact_number ?>" required>
-                            </div>
-                            <div class="col-md-6 form-group">
                                 <label>Address</label>
                                 <input class="form-control" type="text" name="address" placeholder="123 Street" value="<?php echo $address ?>" required>
                             </div>
@@ -158,7 +146,7 @@ include('./action/check-out.php')
                                         $_SESSION['item'][$i]['price'] = $row['price'];
                                         $_SESSION['item'][$i]['discount'] = $row['discount'];
                                         $_SESSION['item'][$i]['sellingPrice'] = $row['price'] - ($row['price'] * $row['discount'] / 100);
-                                        $totalPrize += ($_SESSION['item'][$i]['sellingPrice']*$_SESSION['item'][$i]['quantity']);
+                                        $totalPrize += ($_SESSION['item'][$i]['sellingPrice'] * $_SESSION['item'][$i]['quantity']);
                                         $images = explode(',', $row['image']);
                                         $count = 0;
                             ?>
@@ -239,7 +227,7 @@ include('./action/check-out.php')
                             <?php foreach ($_SESSION['item'] as $item) { ?>
                                 <div class="d-flex justify-content-between">
                                     <p class="text-truncate w-75"><?php echo $item['title'] ?></p>
-                                    <p><?php echo $item['sellingPrice']*$item['quantity'] ?></p>
+                                    <p><?php echo $item['sellingPrice'] * $item['quantity'] ?></p>
                                 </div>
                             <?php } ?>
                         </div>

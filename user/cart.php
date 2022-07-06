@@ -129,7 +129,7 @@ if (isset($_POST['check-out-btn'])) {
                                         <input type="text" value="<?php echo $id ?>" name="id[]" hidden />
                                         <!-- Title  -->
                                         <td class="align-middle">
-                                            <a href='/e-shop/user/product-detail.php?pid=<?php echo $row['product_id'] ?>' class="text-wrap text-truncate text-decoration-none"><?php echo $row['title'] ?></a>
+                                            <a href='/e-shop/user/product-detail.php?pid=<?php echo $row['product_id'] ?>' class="text-wrap text-decoration-none"><?php echo $row['title'] ?></a>
                                         </td>
 
                                         <!-- Price  -->
@@ -193,7 +193,7 @@ if (isset($_POST['check-out-btn'])) {
 
                                         <!-- Colour select-bar start  -->
                                         <?php
-                                        echo '<td class="align-middle">';
+                                        echo '<td class="align-middle" style="width: 50px;">';
                                         if ($row1['colour_available'] == NULL) {
                                             echo '<select name="colour[]" hidden>
                                                     <option value="null" selected>- Select -</option>
@@ -203,7 +203,7 @@ if (isset($_POST['check-out-btn'])) {
                                                 </select>';
                                         } else {
                                             $colours = explode(',', $row1['colour_available']);
-                                            echo '<select name="colour[]" id="colour-' . $id . '" class="w-100" required onchange="setColour(' . $id . ')">';
+                                            echo '<select name="colour[]" id="colour-' . $id . '" class="" required onchange="setColour(' . $id . ')">';
                                             if ($row['colour'] == NULL)
                                                 echo '<option value="" selected disabled>- Select -</option>';
                                             foreach ($colours as $colour) {
