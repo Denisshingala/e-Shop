@@ -16,6 +16,10 @@ if (isset($_POST['place_order'])) {
     $insert_order_details_stmt = $conn->prepare("INSERT INTO `order_details`(`order_id`, `product_id`, `size`, `colour`, `quantity`, `price`, `address`) VALUES (?,?,?,?,?,?,?)");
     $insert_order_details_stmt->bind_param("iissids", $id, $p_id, $p_size, $p_colour, $quantity, $price, $main_address);
 
+    //Remove item from cart
+    $delete_item_from_cart = $conn->prepare("DELETE FROM `cart` WHERE user_id=? AND product_id=?");
+    $delete_item_from_cart->bind_param("ii", $_SESSION['user_id'], $p_id);
+
     if ($insert_order_stmt->execute()) {
         $get_order_id_stmt->execute();
         $res = $get_order_id_stmt->get_result();
@@ -44,7 +48,13 @@ if (isset($_POST['place_order'])) {
                 $main_address = $address . "," . $state . "," . $city . "," . $country . "-" . $pincode;
 
                 if ($insert_order_details_stmt->execute()) {
+                    $delete_item_from_cart->execute();
                     $success = "Your Order has been placed!";
+                    echo "<script> 
+                        setTimeout(()=>{
+                            location.replace('/e-shop/');
+                        },1500);
+                    </script>";
                 } else {
                     $error = "During add product no $i!";
                 }
