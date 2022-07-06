@@ -110,15 +110,7 @@ else
                     <div class="navbar-nav mr-auto py-0">
 
                         <a href="<?php echo $path; ?>index.php" class="nav-item nav-link">Home</a>
-                        <a href="shop.html" class="nav-item nav-link">Shop</a>
-                        <a href="detail.html" class="nav-item nav-link active">Shop Detail</a>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
-                            <div class="dropdown-menu rounded-0 m-0">
-                                <a href="cart.html" class="dropdown-item">Shopping Cart</a>
-                                <a href="checkout.html" class="dropdown-item">Checkout</a>
-                            </div>
-                        </div>
+        
                         <?php
                         if ($filename == 'index.php' || $filename == 'e-shop')
                             echo '<a href="user/contact-us.php" class="nav-item nav-link">Contact</a>';
