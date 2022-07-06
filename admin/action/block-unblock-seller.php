@@ -8,7 +8,7 @@ if (isset($_POST['block_btn'])) {
     $stmt->bind_param("i", $id);
     if ($stmt->execute()) {
         if ($stmt->affected_rows > 0) {
-            $success = "Success! Seller has been block!";
+            $error = "Seller has been block!";
         } else {
             $error = "Oops! Seller is not found!";
         }
@@ -25,7 +25,7 @@ if (isset($_POST['unblock_btn'])) {
     $stmt->bind_param("i", $id);
     if ($stmt->execute()) {
         if ($stmt->affected_rows > 0) {
-            $success = "Success! Seller has been unblock!";
+            $success = "Seller has been unblock!";
         } else {
             $error = "Oops! Seller is not found!";
         }

@@ -85,6 +85,8 @@ require('action/update-product.php');
                 if ($result->num_rows > 0) {
                     $id = 0;
                     while ($row = $result->fetch_assoc()) {
+                        $description = str_replace(array("\r\n", "\\r\\n", "\\\""), "\n", $row['description']);
+
                         $size = $row['size_available'];
                         if ($size == NULL)
                             $size = '--';
@@ -152,7 +154,7 @@ require('action/update-product.php');
 
                                                     <div class="form-group mb-4">
                                                         <label for="description">Product Description</label>
-                                                        <br><textarea name="description" id="description" cols="135" rows="4" class="form-control" style="resize: none;"><?php echo $row['description'] ?></textarea>
+                                                        <br><textarea name="description" id="description" cols="135" rows="4" class="form-control" style="resize: none;"><?php echo $description ?></textarea>
                                                     </div>
 
                                                     <div class="form-row d-flex justify-content-around mb-4">

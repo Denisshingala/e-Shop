@@ -2,6 +2,42 @@
 include('../configuration/config.php');
 include('../action/auth.php');
 include('./action/add-cart.php');
+
+if (isset($_POST['place_order'])) {
+    $_SESSION['item'][0]['id'] = $_GET['pid'];
+    $_SESSION['item'][0]['quantity'] = mysqli_real_escape_string($conn, $_POST['p_quantity']);
+    if (isset($_POST['p_colour']))
+        $_SESSION['item'][0]['colour'] = mysqli_real_escape_string($conn, $_POST['p_colour']);
+    else
+        $_SESSION['item'][0]['colour'] = NULL;
+
+    if (isset($_POST['p_size']))
+        $_SESSION['item'][0]['size'] = mysqli_real_escape_string($conn, $_POST['p_size']);
+    else
+        $_SESSION['item'][0]['size'] = NULL;
+    header("location:/e-shop/user/check-out.php");
+}
+
+if (isset($_POST['check-out-btn'])) {
+
+    $length = sizeof($_POST['id']);
+
+    for ($i = 0; $i < $length; $i++) {
+        $_SESSION['item'][$i]['id'] = $_POST['id'][$i];
+
+        if ($_POST['size'][$i] == "null")
+            $_POST['size'][$i] = NULL;
+        $_SESSION['item'][$i]['size'] = $_POST['size'][$i];
+
+        if ($_POST['colour'][$i] == "null")
+            $_POST['colour'][$i] = NULL;
+        $_SESSION['item'][$i]['colour'] = $_POST['colour'][$i];
+
+        $_SESSION['item'][$i]['quantity'] = $_POST['quantity'][$i];
+    }
+
+    header("location:/e-shop/user/check-out.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -59,163 +95,172 @@ include('./action/add-cart.php');
 
     <!-- Cart Start -->
     <div class="container-fluid pt-5">
-        <div class="row px-xl-5">
+        <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
+            <div class="row px-xl-5">
+                <!-- Cart table end  -->
+                <div class="col-lg-8 table-responsive mb-5">
+                    <table class="table table-bordered text-center mb-0">
+                        <thead class="bg-secondary text-dark">
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Size</th>
+                                <th>Color</th>
+                                <th>Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody class="align-middle">
+                            <?php
+                            $total_cart_cost = 0;
+                            $sql = "SELECT * FROM `cart` as c JOIN `product` as p ON p.product_id=c.product_id WHERE c.user_id=?";
+                            $stmt = $conn->prepare($sql);
+                            $stmt->bind_param("i", $_SESSION['user_id']);
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    $id = $row['product_id'];
+                                    $price = $row['price'] - ($row['price'] * $row['discount']) / 100;
+                                    $total_cart_cost += $price * $row['quantity'];
+                            ?>
+                                    <tr id="tr-<?php echo $id ?>">
+                                        <input type="text" value="<?php echo $id ?>" name="id[]" hidden />
+                                        <!-- Title  -->
+                                        <td class="align-middle">
+                                            <a href='/e-shop/user/product-detail.php?pid=<?php echo $row['product_id'] ?>' class="text-wrap text-truncate text-decoration-none"><?php echo $row['title'] ?></a>
+                                        </td>
 
-            <!-- Cart table end  -->
-            <div class="col-lg-8 table-responsive mb-5">
-                <table class="table table-bordered text-center mb-0">
-                    <thead class="bg-secondary text-dark">
-                        <tr>
-                            <th>Product</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                            <th>Size</th>
-                            <th>Color</th>
-                            <th>Remove</th>
-                        </tr>
-                    </thead>
-                    <tbody class="align-middle">
-                        <?php
-                        $total_cart_cost = 0;
-                        $sql = "SELECT * FROM `cart` as c JOIN `product` as p ON p.product_id=c.product_id WHERE c.user_id=?";
-                        $stmt = $conn->prepare($sql);
-                        $stmt->bind_param("i", $_SESSION['user_id']);
-                        $stmt->execute();
-                        $result = $stmt->get_result();
-                        if ($result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                $id = $row['product_id'];
-                                $price = $row['price'] - ($row['price'] * $row['discount']) / 100;
-                                $total_cart_cost += $price * $row['quantity'];
-                        ?>
-                                <tr id="tr-<?php echo $id ?>">
+                                        <!-- Price  -->
+                                        <td class="align-middle">
+                                            &#8377;<span id="price-<?php echo $id ?>"><?php echo $price ?></span>
+                                        </td>
 
-                                    <!-- Title  -->
-                                    <td class="align-middle"><?php echo $row['title'] ?></td>
-
-                                    <!-- Price  -->
-                                    <td class="align-middle">
-                                        &#8377;<span id="price-<?php echo $id ?>"><?php echo $price ?></span>
-                                    </td>
-
-                                    <!-- Item quantity  -->
-                                    <td class="align-middle" id="add-remove-<?php echo $id ?>">
-                                        <div class="input-group quantity m-auto" style="width: 120px;">
-                                            <div class="input-group-btn">
-                                                <button type="button" class="btn btn-primary btn-minus" onclick="decQuantity(<?php echo $id ?>)">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
+                                        <!-- Item quantity  -->
+                                        <td class="align-middle" id="add-remove-<?php echo $id ?>">
+                                            <div class="input-group quantity m-auto" style="width: 120px;">
+                                                <div class="input-group-btn">
+                                                    <button type="button" class="btn btn-primary btn-minus" onclick="decQuantity(<?php echo $id ?>)">
+                                                        <i class="fa fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                                <input type="text" name="quantity[]" class="form-control bg-secondary text-center h-100" onchange="check(<?php echo $id ?>)" value="<?php echo $row['quantity'] ?>" id="quantity-<?php echo $id ?>" min="1" required>
+                                                <div class="input-group-btn">
+                                                    <button type="button" class="btn btn-primary btn-plus" onclick="incQuantity(<?php echo $id ?>)">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <input type="text" class="form-control bg-secondary text-center h-100" onchange="check(<?php echo $id ?>)" value="<?php echo $row['quantity'] ?>" id="quantity-<?php echo $id ?>" name="p_quantity" min="1" required>
-                                            <div class="input-group-btn">
-                                                <button type="button" class="btn btn-primary btn-plus" onclick="incQuantity(<?php echo $id ?>)">
-                                                    <i class="fa fa-plus"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </td>
+                                        </td>
 
-                                    <!-- Total Cost  -->
-                                    <td class="align-middle">
-                                        &#8377;<span id="cost-<?php echo $id ?>"><?php echo $price * $row['quantity'] ?></span>
-                                    </td>
+                                        <!-- Total Cost  -->
+                                        <td class="align-middle">
+                                            &#8377;<span id="cost-<?php echo $id ?>"><?php echo $price * $row['quantity'] ?></span>
+                                        </td>
 
-                                    <!-- Size select-bar start -->
-                                    <?php
-                                    $sql1 = "SELECT size_available,colour_available FROM `product` WHERE product_id=?";
-                                    $stmt1 = $conn->prepare($sql1);
-                                    $stmt1->bind_param("i", $row['product_id']);
-                                    $stmt1->execute();
-                                    $res = $stmt1->get_result();
-                                    $row1 = $res->fetch_assoc();
-                                    echo '<td class="align-middle">';
-                                    if ($row1['size_available'] == NULL) {
-                                        echo '<select disabled>
+                                        <!-- Size select-bar start -->
+                                        <?php
+                                        $sql1 = "SELECT size_available,colour_available FROM `product` WHERE product_id=?";
+                                        $stmt1 = $conn->prepare($sql1);
+                                        $stmt1->bind_param("i", $row['product_id']);
+                                        $stmt1->execute();
+                                        $res = $stmt1->get_result();
+                                        $row1 = $res->fetch_assoc();
+                                        echo '<td class="align-middle">';
+                                        if ($row1['size_available'] == NULL) {
+                                            echo '<select name="size[]" hidden>
+                                                    <option value="null" selected>- Select -</option>
+                                            </select>';
+                                            echo '<select name="size[]" disabled>
                                                     <option value="" selected disabled>- Select -</option>
                                                 </select>';
-                                    } else {
-                                        $sizes = explode(',', $row1['size_available']);
-                                        echo '<select name="size" id="size-' . $id . '" class="w-100" required onchange="setSize(' . $id . ')">';
-                                        if ($row['size'] == NULL)
-                                            echo '<option value="" selected disabled>- Select -</option>';
-                                        foreach ($sizes as $size) {
-                                            if ($row['size'] == $size)
-                                                echo '<option class="text-center" value="' . $size . '" selected>' . $size . '</option>';
-                                            else
-                                                echo '<option class="text-center" value="' . $size . '">' . $size . '</option>';
+                                        } else {
+                                            $sizes = explode(',', $row1['size_available']);
+                                            echo '<select name="size[]" id="size-' . $id . '" class="w-100" required onchange="setSize(' . $id . ')">';
+                                            if ($row['size'] == NULL)
+                                                echo '<option value="" selected disabled>- Select -</option>';
+                                            foreach ($sizes as $size) {
+                                                if ($row['size'] == $size)
+                                                    echo '<option class="text-center" value="' . $size . '" selected>' . $size . '</option>';
+                                                else
+                                                    echo '<option class="text-center" value="' . $size . '">' . $size . '</option>';
+                                            }
+                                            echo '</select>';
                                         }
-                                        echo '</select>';
-                                    }
-                                    echo '</td>'; ?>
-                                    <!-- Size select-bar end  -->
+                                        echo '</td>'; ?>
+                                        <!-- Size select-bar end  -->
 
-                                    <!-- Colour select-bar start  -->
-                                    <?php
-                                    echo '<td class="align-middle">';
-                                    if ($row1['colour_available'] == NULL) {
-                                        echo '<select disabled>
+                                        <!-- Colour select-bar start  -->
+                                        <?php
+                                        echo '<td class="align-middle">';
+                                        if ($row1['colour_available'] == NULL) {
+                                            echo '<select name="colour[]" hidden>
+                                                    <option value="null" selected>- Select -</option>
+                                            </select>';
+                                            echo '<select name="colour[]" disabled>
                                                     <option value="" selected disabled>- Select -</option>
                                                 </select>';
-                                    } else {
-                                        $colours = explode(',', $row1['colour_available']);
-                                        echo '<select name="colour" id="colour-' . $id . '" class="w-100" required onchange="setColour(' . $id . ')">';
-                                        if ($row['colour'] == NULL)
-                                            echo '<option value="" selected disabled>- Select -</option>';
-                                        foreach ($colours as $colour) {
-                                            if ($row['colour'] == $colour)
-                                                echo '<option class="text-center" value="' . $colour . '" selected>' . $colour . '</option>';
-                                            else
-                                                echo '<option class="text-center" value="' . $colour . '">' . $colour . '</option>';
+                                        } else {
+                                            $colours = explode(',', $row1['colour_available']);
+                                            echo '<select name="colour[]" id="colour-' . $id . '" class="w-100" required onchange="setColour(' . $id . ')">';
+                                            if ($row['colour'] == NULL)
+                                                echo '<option value="" selected disabled>- Select -</option>';
+                                            foreach ($colours as $colour) {
+                                                if ($row['colour'] == $colour)
+                                                    echo '<option class="text-center" value="' . $colour . '" selected>' . $colour . '</option>';
+                                                else
+                                                    echo '<option class="text-center" value="' . $colour . '">' . $colour . '</option>';
+                                            }
+
+                                            echo '</select>';
                                         }
+                                        echo '</td>';
+                                        $stmt1->close();
+                                        ?>
+                                        <!-- Colour select-bar end  -->
 
-                                        echo '</select>';
-                                    }
-                                    echo '</td>';
-                                    $stmt1->close();
-                                    ?>
-                                    <!-- Colour select-bar end  -->
-
-                                    <!-- Romove item  -->
-                                    <td class="align-middle">
-                                        <form method="POST" action="<?php echo $_SERVER['PHP_SELF'] ?>">
-                                            <input type="number" value="<?php echo $id ?>" name="p_id" hidden>
-                                            <button type="submit" name="remove" class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                        <?php
+                                        <!-- Romove item  -->
+                                        <td class="align-middle">
+                                            <form method="POST" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+                                                <input type="number" value="<?php echo $id ?>" name="p_id" hidden>
+                                                <button type="submit" name="remove" class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                            <?php
+                                }
+                            } else {
+                                echo "<tr><td colspan='7'>No data found!</td></tr>";
                             }
-                        } else {
-                            echo "<tr><td colspan='7'>No data found!</td></tr>";
-                        }
-                        $stmt->close();
-                        ?>
-                    </tbody>
-                </table>
-            </div>
-            <!-- Cart table end  -->
+                            $stmt->close();
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Cart table end  -->
 
-            <!-- Cart cost start  -->
-            <div class="col-lg-4">
-                <div class="card border-secondary mb-5">
-                    <div class="card-header bg-secondary border-0">
-                        <h4 class="font-weight-semi-bold m-0">Cart Summary</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between mb-3 pt-1">
-                            <h6 class="font-weight-medium">Total</h6>
-                            <h6 class="font-weight-medium">&#8377;<span id="total-cart-cost"><?php echo $total_cart_cost ?></span></h6>
+                <!-- Cart cost start  -->
+                <div class="col-lg-4">
+                    <div class="card border-secondary mb-5">
+                        <div class="card-header bg-secondary border-0">
+                            <h4 class="font-weight-semi-bold m-0">Cart Summary</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-3 pt-1">
+                                <h6 class="font-weight-medium">Total</h6>
+                                <h6 class="font-weight-medium">&#8377;<span id="total-cart-cost"><?php echo $total_cart_cost ?></span></h6>
+                            </div>
+                        </div>
+                        <div class="card-footer border-secondary bg-transparent">
+                            <button class="btn btn-block btn-primary my-3 py-3" type="submit" name="check-out-btn">Proceed To Checkout</button>
                         </div>
                     </div>
-                    <div class="card-footer border-secondary bg-transparent">
-                        <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
-                    </div>
                 </div>
-            </div>
-            <!-- Cart cost end  -->
+                <!-- Cart cost end  -->
 
-        </div>
+            </div>
+        </form>
     </div>
     <!-- Cart End -->
 
