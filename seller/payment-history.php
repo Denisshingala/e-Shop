@@ -34,21 +34,30 @@ require('action/auth.php');
             <table class="table table-bordered table-responsive table-striped text-center my-auto" id="myTable">
                 <thead>
                     <tr style="background-color: rgb(95, 162, 240);">
-                        <th>Invoice Number</th>
+                        <th>Order ID</th>
                         <th>Payment Method</th>
-                        <th>Transaction id</th>
                         <th>Payment Date</th>
                         <th>Amount</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Mark</td>
-                        <td>Cash On Delivery</td>
-                        <td>Otto</td>
-                        <td>Otto</td>
-                        <td>Otto</td>
-                    </tr>
+                    <?php
+                    $sql = "SELECT orders.order_id, SUM(order_details.price * order_details.quantity) as total_price, orders.order_date FROM orders JOIN order_details ON order_details.order_id = orders.order_id JOIN product ON product.product_id = order_details.product_id JOIN seller ON seller.seller_id = product.seller_id WHERE seller.seller_id=? GROUP BY order_details.order_id ";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("i", $_SESSION['seller_id']);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<tr>
+                                    <td>' . $row['order_id'] . '</td>
+                                    <td>Cash On Delivery</td>
+                                    <td>' . $row['order_date'] . '</td>
+                                    <td>' . number_format((float)$row['total_price'], 2, '.', '') . '</td>
+                                </tr>';
+                        }
+                    }
+                    ?>
                 </tbody>
             </table>
 

@@ -30,13 +30,8 @@ $filename = basename($_SERVER['REQUEST_URI']);
             </a>
         </li>
         <li>
-            <a href="products-sold-details.php" class="nav-link text-white <?php echo ($filename == 'products-sold-details.php') ? 'active' : ''; ?>">
-                Products Sold details
-            </a>
-        </li>
-        <li>
-            <a href="order-details.php" class="nav-link text-white <?php echo ($filename == 'order-details.php') ? 'active' : ''; ?>">
-                Order details
+            <a href="order-history.php" class="nav-link text-white <?php echo ($filename == 'order-history.php') ? 'active' : ''; ?>">
+                Order History
             </a>
         </li>
         <li>

@@ -27,16 +27,26 @@ else
                 $searchText = $conn->real_escape_string($_POST['search-text']);
                 $array = explode(' ', $searchText);
 
-                foreach ($array as $search) {
-                    $sql = "SELECT * from product JOIN category ON category.category_id = product.category_id WHERE match(category.category_name, product.title) against(?);";
+                foreach($array as $search) {
+                    $sql = "SELECT * from product WHERE match(title) against(?);";
                     $stmt = $conn->prepare($sql);
-                    $stmt->bind_param("i", $search);
+                    $stmt->bind_param("s", $search);
                     $stmt->execute();
                     $result = $stmt->get_result();
                     if ($result->num_rows > 0) {
                         $row = $result->fetch_assoc();
-                        header("location: /e-shop/user/products.php?cid=${$row['category_id']}");
-                    }
+                        header("location: /e-shop/user/products.php?cid={$row['category_id']}&page_no=1");
+                    }   
+                    
+                    $sql = "SELECT * from category WHERE match(category_name) against(?);";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("s", $search);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    if($result->num_rows > 0) {
+                        $row = $result->fetch_assoc();
+                        header("location: /e-shop/user/products.php?cid={$row['category_id']}&page_no=1");
+                    }   
                 }
                 echo "No match found";
             }
