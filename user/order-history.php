@@ -97,7 +97,7 @@ include('../action/auth.php');
                                 <tr class="align-middle">
                                     <td class="align-middle"><?php echo $row['order_date'] ?></td>
                                     <td class="align-middle">
-                                        <a href="/e-shop/user/product-details.php?p_id=<?php echo $row['product_id'] ?>">
+                                        <a href="/e-shop/user/product-detail.php?pid=<?php echo $row['product_id'] ?>">
                                             <?php echo $p_row['title'] ?>
                                         </a>
                                     </td>
@@ -122,12 +122,8 @@ include('../action/auth.php');
         <?php include('./utilities/footer.php'); ?>
         <!-- Footer End -->
 
-
         <!-- Back to Top -->
         <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
-
-        <!-- Template Javascript -->
-        <script src="js/main.js"></script>
     </body>
 
 </html>
