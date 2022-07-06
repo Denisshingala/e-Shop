@@ -27,16 +27,16 @@ else
                 $searchText = $conn->real_escape_string($_POST['search-text']);
                 $array = explode(' ', $searchText);
 
-                foreach($array as $search) {
+                foreach ($array as $search) {
                     $sql = "SELECT * from product JOIN category ON category.category_id = product.category_id WHERE match(category.category_name, product.title) against(?);";
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param("i", $search);
                     $stmt->execute();
                     $result = $stmt->get_result();
-                    if($result->num_rows > 0) {
+                    if ($result->num_rows > 0) {
                         $row = $result->fetch_assoc();
                         header("location: /e-shop/user/products.php?cid=${$row['category_id']}");
-                    }   
+                    }
                 }
                 echo "No match found";
             }
@@ -142,7 +142,7 @@ else
                         ?>
 
                         <?php if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') {
-                            echo '<a href="order-history.html" class="nav-item nav-link">Order history</a>';
+                            echo '<a href="/e-shop/user/order-history.php" class="nav-item nav-link">Order history</a>';
                         } ?>
                     </div>
                     <?php if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') { ?>
