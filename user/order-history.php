@@ -88,26 +88,27 @@ include('../action/auth.php');
                             $stmt->execute();
                             $res = $stmt->get_result();
                             if ($res->num_rows > 0) {
-                                $row = $res->fetch_assoc();
-                                $p_id = $row['product_id'];
-                                $fetch_product_details->execute();
-                                $p_res = $fetch_product_details->get_result();
-                                $p_row = $p_res->fetch_assoc();
+                                while ($row = $res->fetch_assoc()) {
+                                    $p_id = $row['product_id'];
+                                    $fetch_product_details->execute();
+                                    $p_res = $fetch_product_details->get_result();
+                                    $p_row = $p_res->fetch_assoc();
                             ?>
-                                <tr class="align-middle">
-                                    <td class="align-middle"><?php echo $row['order_date'] ?></td>
-                                    <td class="align-middle">
-                                        <a href="/e-shop/user/product-detail.php?pid=<?php echo $row['product_id'] ?>">
-                                            <?php echo $p_row['title'] ?>
-                                        </a>
-                                    </td>
-                                    <td class="align-middle"><?php echo $row['quantity'] ?></td>
-                                    <td class="align-middle"><?php echo $row['price'] ?></td>
-                                    <td class="align-middle"><?php echo $row['size'] == "NULL" ? "-" : $row['size'] ?></td>
-                                    <td class="align-middle"><?php echo $row['colour'] == "NULL" ? "-" : $row['colour'] ?></td>
-                                </tr>
+                                    <tr class="align-middle">
+                                        <td class="align-middle"><?php echo $row['order_date'] ?></td>
+                                        <td class="align-middle">
+                                            <a href="/e-shop/user/product-detail.php?pid=<?php echo $row['product_id'] ?>">
+                                                <?php echo $p_row['title'] ?>
+                                            </a>
+                                        </td>
+                                        <td class="align-middle"><?php echo $row['quantity'] ?></td>
+                                        <td class="align-middle"><?php echo $row['price'] ?></td>
+                                        <td class="align-middle"><?php echo $row['size'] == "NULL" ? "-" : $row['size'] ?></td>
+                                        <td class="align-middle"><?php echo $row['colour'] == "NULL" ? "-" : $row['colour'] ?></td>
+                                    </tr>
 
-                            <?php } else { ?>
+                                <?php }
+                            } else { ?>
                                 <tr class="align-middle">
                                     <td colspan="6">No Data Found!</td>
                                 </tr>

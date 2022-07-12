@@ -1,5 +1,6 @@
 <?php
 include('../configuration/config.php');
+include('../action/auth.php');
 include('./action/contact-us.php')
 ?>
 

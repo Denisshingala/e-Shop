@@ -1,7 +1,5 @@
 <?php
 $filename = basename($_SERVER['REQUEST_URI']);
-// include('../../configuration/config.php');
-
 if ($filename == 'index.php' || $filename == 'e-shop')
     $path = '';
 else
@@ -27,7 +25,7 @@ else
                 $searchText = $conn->real_escape_string($_POST['search-text']);
                 $array = explode(' ', $searchText);
 
-                foreach($array as $search) {
+                foreach ($array as $search) {
                     $sql = "SELECT * from product WHERE match(title) against(?);";
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param("s", $search);
@@ -36,17 +34,17 @@ else
                     if ($result->num_rows > 0) {
                         $row = $result->fetch_assoc();
                         header("location: /e-shop/user/products.php?cid={$row['category_id']}&page_no=1");
-                    }   
-                    
+                    }
+
                     $sql = "SELECT * from category WHERE match(category_name) against(?);";
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param("s", $search);
                     $stmt->execute();
                     $result = $stmt->get_result();
-                    if($result->num_rows > 0) {
+                    if ($result->num_rows > 0) {
                         $row = $result->fetch_assoc();
                         header("location: /e-shop/user/products.php?cid={$row['category_id']}&page_no=1");
-                    }   
+                    }
                 }
                 echo "No match found";
             }
@@ -142,18 +140,13 @@ else
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
 
-                        <a href="<?php echo $path; ?>index.php" class="nav-item nav-link">Home</a>
+                        <a href="<?php echo $path; ?>index.php" class="nav-item nav-link <?php echo ($filename == 'e-shop' || $filename == 'index.php') ? 'active' : ''; ?>">Home</a>
 
-                        <?php
-                        if ($filename == 'index.php' || $filename == 'e-shop')
-                            echo '<a href="user/contact-us.php" class="nav-item nav-link">Contact</a>';
-                        else
-                            echo '<a href="contact-us.php" class="nav-item nav-link">Contact</a>';
-                        ?>
+                        <a href="/e-shop/user/contact-us.php" class="nav-item nav-link <?php echo ($filename == 'contact-us.php') ? 'active' : ''; ?>">Contact Us</a>
 
-                        <?php if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') {
-                            echo '<a href="/e-shop/user/order-history.php" class="nav-item nav-link">Order history</a>';
-                        } ?>
+                        <?php if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') { ?>
+                            <a href="/e-shop/user/order-history.php" class="nav-item nav-link <?php echo ($filename == 'order-history.php') ? 'active' : ''; ?>">Order history</a>
+                        <?php } ?>
                     </div>
                     <?php if (isset($_SESSION['type']) && $_SESSION['type'] === 'user') { ?>
                         <div class="navbar-nav ml-auto py-0">
