@@ -34,30 +34,70 @@ require('action/auth.php');
                     <div class="c-dashboardInfo col-lg-3 col-md-6">
                         <div class="wrap">
                             <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
-                                Portfolio Balance
-                            </h4><span class="hind-font caption-12 c-dashboardInfo__count">€10,500</span>
+                                Number of users
+                            </h4><span class="hind-font caption-12 c-dashboardInfo__count">
+                                <?php
+                                $sql = "SELECT COUNT(*) as row FROM `user`";
+                                $stmt = $conn->prepare($sql);
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+                                $row = $result->fetch_assoc();
+                                echo $row['row'];
+                                ?>
+                            </span>
                         </div>
                     </div>
                     <div class="c-dashboardInfo col-lg-3 col-md-6">
                         <div class="wrap">
                             <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
-                                Rental income
-                            </h4><span class="hind-font caption-12 c-dashboardInfo__count">€500</span><span class="hind-font caption-12 c-dashboardInfo__subInfo">Last month: €30</span>
+                                Number of seller
+                            </h4><span class="hind-font caption-12 c-dashboardInfo__count">
+                                <?php
+                                $sql = "SELECT COUNT(*) as row FROM `seller`";
+                                $stmt = $conn->prepare($sql);
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+                                $row = $result->fetch_assoc();
+                                echo $row['row'];
+                                $stmt->close();
+                                ?>
+                            </span>
+                            <!-- <span class="hind-font caption-12 c-dashboardInfo__subInfo">Last month: €30</span> -->
                         </div>
                     </div>
                     <div class="c-dashboardInfo col-lg-3 col-md-6">
                         <div class="wrap">
                             <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
-                                Available funds
-                            </h4><span class="hind-font caption-12 c-dashboardInfo__count">€5000</span>
+                                Number of Item
+                            </h4><span class="hind-font caption-12 c-dashboardInfo__count">
+                                <?php
+                                $sql = "SELECT COUNT(*) as row FROM `product`";
+                                $stmt = $conn->prepare($sql);
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+                                $row = $result->fetch_assoc();
+                                echo $row['row'];
+                                $stmt->close();
+                                ?>
+                            </span>
                         </div>
                     </div>
                     <div class="c-dashboardInfo col-lg-3 col-md-6">
                         <div class="wrap">
                             <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
-                                Rental return
+                                Total orders
                             </h4>
-                            <span class="hind-font caption-12 c-dashboardInfo__count">6,40%</span>
+                            <span class="hind-font caption-12 c-dashboardInfo__count">
+                                <?php
+                                $sql = "SELECT COUNT(*) as row FROM `orders`";
+                                $stmt = $conn->prepare($sql);
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+                                $row = $result->fetch_assoc();
+                                echo $row['row'];
+                                $stmt->close();
+                                ?>
+                            </span>
                         </div>
                     </div>
                 </div>
