@@ -38,14 +38,14 @@ require('action/auth.php');
                         <div class="wrap">
                             <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
                                 Total Selling
-                            </h4><span class="hind-font caption-12 c-dashboardInfo__count">500</span><span class="hind-font caption-12 c-dashboardInfo__subInfo">Last month: &#x20B9;30</span>
+                            </h4><span class="hind-font caption-12 c-dashboardInfo__count">500</span><span class="hind-font caption-12 c-dashboardInfo__subInfo">Last month: $30</span>
                         </div>
                     </div>
                     <div class="c-dashboardInfo col-lg-3 col-md-6">
                         <div class="wrap">
                             <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
                                 Earnings
-                            </h4><span class="hind-font caption-12 c-dashboardInfo__count">&#x20B9;5000</span>
+                            </h4><span class="hind-font caption-12 c-dashboardInfo__count">$5000</span>
                         </div>
                     </div>
                     <div class="c-dashboardInfo col-lg-3 col-md-6">

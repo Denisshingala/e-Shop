@@ -58,7 +58,7 @@ $limitPerPage = 2;
 
                 <!-- Price Start -->
                 <div class="border-bottom mb-4 pb-4" id="price-range">
-                    <h5 class="font-weight-semi-bold mb-4">Price Range (&#x20b9;)</h5>
+                    <h5 class="font-weight-semi-bold mb-4">Price Range ($)</h5>
                     <form>
 
                         <?php
@@ -85,7 +85,6 @@ $limitPerPage = 2;
                                     <input type="checkbox" name="price-range" class="custom-control-input price-range" id="price-<?php echo $i + 1; ?>" value="<?php echo $range; ?>">
 
                                     <label class="custom-control-label" for="price-<?php echo $i + 1; ?>"><?php echo $range; ?></label>
-                                    <span class="badge border font-weight-normal">150</span>
                                 </div>
                         <?php
                             }
@@ -115,7 +114,6 @@ $limitPerPage = 2;
                                     <input type="checkbox" name="brand" class="custom-control-input brand" id="brand-' . $i . '" value="' . $row['brand'] . '">
 
                                     <label class="custom-control-label" for="brand-' . $i . '">' . $row['brand'] . '</label>
-                                    <span class="badge border font-weight-normal">150</span>
                                 </div>';
 
                                 $i++;

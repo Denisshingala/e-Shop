@@ -34,7 +34,7 @@ require('action/auth.php');
 
         <div class="main-body" class="p-2">
 
-            <table class="table table-bordered table-responsive table-striped text-center my-5" style="width: 850px" id="myTable"f>
+            <table class="table table-bordered table-responsive table-striped text-center my-5" style="width: 850px" id="myTable" f>
                 <thead>
                     <tr style="background-color: rgb(95, 162, 240);">
                         <th>Order ID</th>
@@ -48,15 +48,16 @@ require('action/auth.php');
                 </thead>
                 <tbody>
                     <?php
-                    $sql = "SELECT * FROM orders JOIN order_details ON orders.order_id = order_details.order_id JOIN product ON product.product_id = order_details.product_id JOIN category ON category.category_id = product.category_id JOIN seller ON seller.seller_id = product.seller_id WHERE seller.seller_id=?";
+                    $sql = "SELECT * FROM orders JOIN order_details ON orders.order_id = order_details.order_id JOIN product ON product.product_id = order_details.product_id JOIN category ON category.category_id = product.category_id JOIN seller ON seller.seller_id = product.seller_id WHERE seller.seller_id=? ORDER BY orders.order_id";
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param("i", $_SESSION['seller_id']);
                     $stmt->execute();
                     $result = $stmt->get_result();
                     if ($result->num_rows > 0) {
                         $temp = '';
+                        $prev_id = -1;
                         while ($row = $result->fetch_assoc()) {
-                            if ($row['size'] == "NULL") 
+                            if ($row['size'] == "NULL")
                                 $size = '-';
                             else
                                 $size = $row['size'];
@@ -66,7 +67,7 @@ require('action/auth.php');
                             else
                                 $colour = $row['colour'];
                             echo '<tr>
-                                <td>' . $row['order_id'] . '</td>
+                                <td>' . ($prev_id == $row['order_id'] ? "<span hidden>" . $row['order_id'] . "</span>" : $row['order_id']) . '</td>
                                 <td style="width:300px;">' . $row['title'] . '</td>
                                 <td>' . $row['brand'] . '</td>
                                 <td>' . $row['category_name'] . '</td>
@@ -74,6 +75,7 @@ require('action/auth.php');
                                 <td>' . $size . '</td>
                                 <td>' . $colour . '</td>
                             </tr>';
+                            $prev_id = $row['order_id'];
                         }
                     }
                     ?>

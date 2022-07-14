@@ -51,7 +51,7 @@ $limitPerPage = 2;
 
                 <!-- Price Start -->
                 <div class="border-bottom mb-4 pb-4" id="price-range">
-                    <h5 class="font-weight-semi-bold mb-4">Price Range (&#x20b9;)</h5>
+                    <h5 class="font-weight-semi-bold mb-4">Price Range ($)</h5>
                     <form>
 
                         <?php

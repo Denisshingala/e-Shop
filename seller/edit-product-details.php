@@ -128,7 +128,7 @@ require('action/update-product.php');
                                 <div class="product-body">
                                     <h5 class="card-title fw-bold"><?php echo $row['brand'] ?></h5>
                                     <h6 class="product-desc pb-2"><?php echo $row['title'] ?></h6>
-                                    <p><span class="newprize h4">&#8377;<?php echo $sellingPrice ?></span> <span class="oldprize">&#8377;<?php echo $row['price'] ?></span> (<?php echo $row['discount'] ?>% off)</p>
+                                    <p><span class="newprize h4">$<?php echo $sellingPrice ?></span> <span class="oldprize">$<?php echo $row['price'] ?></span> (<?php echo $row['discount'] ?>% off)</p>
                                 </div>
 
                                 <!-- Model form  -->

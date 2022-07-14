@@ -25,9 +25,9 @@ if (isset($_POST['review-btn']) && $_POST['review-description'] != '') {
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("iiss", $productID, $_SESSION['user_id'], $description, $today);
     if ($stmt->execute())
-        echo "Reviewed";
+        $success = "Thanks for valuable feedback!";
     else
-        echo "Error in review";
+        $error = "Something went wrong on server!";
 }
 
 require('./action/add-cart.php');
@@ -148,8 +148,8 @@ if (isset($_POST['place_order'])) {
 
             <div class="col-lg-7 pb-5">
                 <h3 class="font-weight-semi-bold"><?php echo $title; ?></h3>
-                <h3 class="font-weight-semi-bold"><small class="mr-2" style="color:red;">-<?php echo $discount; ?>% </small> &#x20b9; <?php echo ($row['price'] - ($row['price'] * $row['discount'] / 100)); ?></h3>
-                <p><small style="margin-bottom: 100px; !important">M.R.P. <del>&#x20b9; <?php echo $price; ?></del></small></p>
+                <h3 class="font-weight-semi-bold"><small class="mr-2" style="color:red;">-<?php echo $discount; ?>% </small> $ <?php echo ($row['price'] - ($row['price'] * $row['discount'] / 100)); ?></h3>
+                <p><small style="margin-bottom: 100px; !important">M.R.P. <del>$ <?php echo $price; ?></del></small></p>
 
                 <p><span style="font-weight:bold; color:black; font-size:1.2rem; ">Brand : </span><?php echo $row['brand']; ?></p>
 
@@ -315,52 +315,50 @@ if (isset($_POST['place_order'])) {
         <div class="text-center mb-4">
             <h2 class="section-title px-5"><span class="px-2">You May Also Like</span></h2>
         </div>
-        <div class="row px-xl-5">
-            <div class="col">
-                <div class="owl-carousel related-carousel d-flex justify-content-around flex-wrap">
+        <div class="row px-xl-5 pb-3 justify-content-center">
 
-                    <?php
-                    $sql1 = "SELECT * FROM product WHERE category_id=? ORDER BY RAND() LIMIT 5";
-                    $stmt1 = $conn->prepare($sql1);
-                    $stmt1->bind_param("i", $categoryID);
-                    $stmt1->execute();
-                    $result1 = $stmt1->get_result();
-                    if ($result1->num_rows > 0) {
-                        while ($row1 = $result1->fetch_assoc()) {
-                            $images = explode(',', $row1['image']);
+            <?php
+            $sql1 = "SELECT * FROM product WHERE category_id=? ORDER BY RAND() LIMIT 5";
+            $stmt1 = $conn->prepare($sql1);
+            $stmt1->bind_param("i", $categoryID);
+            $stmt1->execute();
+            $result1 = $stmt1->get_result();
+            if ($result1->num_rows > 0) {
+                while ($row1 = $result1->fetch_assoc()) {
+                    $images = explode(',', $row1['image']);
 
-                            echo '<div class="card product-item border-0 w-25 mx-2 my-3">
-                                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-4 overflow-hidden" style="object-fit: contain;">
-                                            <img src="../' . $images[0] . '" alt="" style="object-fit:contain; width: 100%; height: 50vh;">
+                    echo '<div class="col-lg-3 col-md-6 col-sm-12 pb-4" style="height:450px;">
+                                    <div class="card product-item border-0 mb-4">
+                                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0 d-flex align-items-center" style="height:250px;">
+                                            <img class="img-fluid w-100" style="object-fit: contain; background: rgba(245, 245, 245, 0.5); height:250px;" src="../' . $images[0] . '" alt="">
                                         </div>
-                                        <div class="card-body border-left border-right text-center p-4">
+                                        <div class="card-body border-left border-right text-center px-3 pt-4 pb-3">
                                             <h6 class="text-truncate mb-3">' . $row1['title'] . '</h6>
                                             <div class="d-flex justify-content-center">
-                                                <h6>&#8377; ' . ($row1['price'] - ($row1['price'] * $row1['discount'] / 100)) . '</h6>
-                                                <h6 class="text-muted ml-2"><del>&#8377;' . $row1['price'] . '</del></h6>
+                                                <h6>$ ' . ($row1['price'] - ($row1['price'] * $row1['discount'] / 100)) . '</h6>
+                                                <small class="text-muted ml-2"><del>$ ' . $row1['price'] . '</del></small>
                                             </div>
                                         </div>
                                         <div class="card-footer d-flex justify-content-between bg-light border">';
-                            if (isset($_SESSION['user_id'])) {
-                                echo '
-                                <a href="product-detail.php?pid=' . $row1['product_id'] . '" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                <form method="post" action="' . $_SERVER['REQUEST_URI'] . '">
-                                    <input type="number" value=' . $row1['product_id'] . ' name="p_id" hidden/>
-                                    <input type="number" value=1 name="p_quantity" hidden/>
-                                    <button type="submit" name="add_cart" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</button>
-                                </form>';
-                            } else {
-                                echo '<a href="product-detail.php?pid=' . $row1['product_id'] . '" class="btn btn-sm text-dark p-0 w-100">
-                                        <i class="fas fa-eye text-primary mr-1"></i>View Detail</a>';
-                            }
-                            echo '</div></div>';
-                        }
-                        $stmt1->close();
-                    }
-                    ?>
 
-                </div>
-            </div>
+                    if (isset($_SESSION['user_id'])) {
+                        echo '<a href="user/product-detail.php?pid=' . $row1['product_id'] . '" class="btn btn-sm text-dark p-0">
+                            <i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+                            <form method="post">
+                                <input type="number" value=' . $row1['product_id'] . ' name="p_id" hidden/>
+                                <input type="number" value=1 name="p_quantity" hidden/>
+                                <button type="submit" name="add_cart" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</button>
+                            </form>';
+                    } else {
+                        echo '<a href="user/product-detail.php?pid=' . $row1['product_id'] . '" class="btn btn-sm text-dark p-0 w-100">
+                            <i class="fas fa-eye text-primary mr-1"></i>View Detail</a>';
+                    }
+
+                    echo '</div></div></div>';
+                }
+            }
+            ?>
+
         </div>
     </div>
     <!-- Products End -->

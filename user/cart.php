@@ -134,7 +134,7 @@ if (isset($_POST['check-out-btn'])) {
 
                                         <!-- Price  -->
                                         <td class="align-middle">
-                                            &#8377;<span id="price-<?php echo $id ?>"><?php echo $price ?></span>
+                                            $<span id="price-<?php echo $id ?>"><?php echo $price ?></span>
                                         </td>
 
                                         <!-- Item quantity  -->
@@ -156,7 +156,7 @@ if (isset($_POST['check-out-btn'])) {
 
                                         <!-- Total Cost  -->
                                         <td class="align-middle">
-                                            &#8377;<span id="cost-<?php echo $id ?>"><?php echo $price * $row['quantity'] ?></span>
+                                            $<span id="cost-<?php echo $id ?>"><?php echo $price * $row['quantity'] ?></span>
                                         </td>
 
                                         <!-- Size select-bar start -->
@@ -249,7 +249,7 @@ if (isset($_POST['check-out-btn'])) {
                         <div class="card-body">
                             <div class="d-flex justify-content-between mb-3 pt-1">
                                 <h6 class="font-weight-medium">Total</h6>
-                                <h6 class="font-weight-medium">&#8377;<span id="total-cart-cost"><?php echo $total_cart_cost ?></span></h6>
+                                <h6 class="font-weight-medium">$<span id="total-cart-cost"><?php echo $total_cart_cost ?></span></h6>
                             </div>
                         </div>
                         <div class="card-footer border-secondary bg-transparent">

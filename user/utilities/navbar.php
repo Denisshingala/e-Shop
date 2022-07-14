@@ -9,7 +9,7 @@ else
 <div class="container-fluid">
     <div class="row align-items-center px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
-            <a href="index.php" class="text-decoration-none">
+            <a href="/e-shop/index.php" class="text-decoration-none">
                 <?php
                 if ($filename == 'index.php' || $filename == 'e-shop')
                     echo '<img src="./images/logo.png" alt="e-Shop" width="140" height="130">';
@@ -19,38 +19,7 @@ else
             </a>
         </div>
         <div class="col-lg-6 col-6 text-left">
-
-            <?php
-            if (isset($_POST['search-btn']) && $_POST['search-text'] !== '') {
-                $searchText = $conn->real_escape_string($_POST['search-text']);
-                $array = explode(' ', $searchText);
-
-                foreach ($array as $search) {
-                    $sql = "SELECT * from product WHERE match(title) against(?);";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->bind_param("s", $search);
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    if ($result->num_rows > 0) {
-                        $row = $result->fetch_assoc();
-                        header("location: /e-shop/user/products.php?cid={$row['category_id']}&page_no=1");
-                    }
-
-                    $sql = "SELECT * from category WHERE match(category_name) against(?);";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->bind_param("s", $search);
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    if ($result->num_rows > 0) {
-                        $row = $result->fetch_assoc();
-                        header("location: /e-shop/user/products.php?cid={$row['category_id']}&page_no=1");
-                    }
-                }
-                echo "No match found";
-            }
-            ?>
-
-            <form action="" method="POST">
+            <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search for products" name="search-text" id="search-text">
                     <div class="input-group-append">
